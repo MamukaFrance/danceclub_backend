@@ -1,0 +1,15 @@
+[90m= [39m[34;4mApp\Models\User[39;24m {#6519
+    [34mid[39m: [35m13[39m,
+    [34mname[39m: "[32mtestUser[39m",
+    [34memail[39m: "[32mtest@gmail.com[39m",
+    [34memail_verified_at[39m: [36mnull[39m,
+    #[33mpassword[39m: "[32m$2y$12$yTH4g74/Hfu2V8V.nrO1f.bLPUPjtQ6tsMHS7Va.Jm/HnfCqGw0vK[39m",
+    [34mphone[39m: [36mnull[39m,
+    [34mavatar[39m: [36mnull[39m,
+    [34mrole[39m: "[32mstudent[39m",
+    #[33mremember_token[39m: [36mnull[39m,
+    [34mcreated_at[39m: "[32m2025-12-15 20:23:54[39m",
+    [34mupdated_at[39m: "[32m2026-01-15 22:08:26[39m",
+    #[33mapi_token[39m: "[32m981303c3bdc0d8d02b905b38fbdf489cc6b227c0b5638f42f3c0ee655b2a7428[39m",
+  }
+

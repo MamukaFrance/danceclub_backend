@@ -7,8 +7,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -64,10 +62,8 @@ class AuthController extends Controller
             ], 401);
         }
 
-        // Generate a new token and save it
-        $token = Str::random(60);
-        $user->api_token = hash('sha256', $token);
-        $user->save();
+        // Generate token using Sanctum
+        $token = $user->createToken('flutter-token')->plainTextToken;
 
         return response()->json([
             'message' => 'Login successful',

@@ -25,44 +25,44 @@ class CourseController extends Controller
     }
 
     public function reserveCourse(Request $request, Course $course)
-{
-    $request->validate([
-        'user_id' => 'required|exists:users,id',
-    ]);
+    {
+        // $request->validate([
+        //     'user_id' => 'required|exists:users,id',
+        // ]);
 
-    return DB::transaction(function () use ($course, $request) {
+        return DB::transaction(function () use ($course, $request) {
 
-        // Vérifier les places restantes
-        if ($course->remaining_seats <= 0) {
+            // Vérifier les places restantes
+            if ($course->remaining_seats <= 0) {
+                return response()->json([
+                    'message' => 'Plus de places disponibles'
+                ], 400);
+            }
+
+            // Empêcher double réservation
+            $alreadyReserved = $course->reservations()
+                ->where('user_id', $request->user()->id)
+                ->exists();
+
+            if ($alreadyReserved) {
+                return response()->json([
+                    'message' => 'Vous avez deja reserve ce cours'
+                ], 409);
+            }
+
+            // Créer la réservation
+            $course->reservations()->create([
+                'user_id' => $request->user()->id,
+                'reservation_date' => now(),
+            ]);
+
+            // Décrémenter les places
+            $course->decrement('remaining_seats');
+
             return response()->json([
-                'message' => 'Plus de places disponibles'
-            ], 400);
-        }
-
-        // Empêcher double réservation
-        $alreadyReserved = $course->reservations()
-            ->where('user_id', $request->user_id)
-            ->exists();
-
-        if ($alreadyReserved) {
-            return response()->json([
-                'message' => 'Vous avez déjà réservé ce cours'
-            ], 409);
-        }
-
-        // Créer la réservation
-        $course->reservations()->create([
-            'user_id' => $request->user_id,
-            'reservation_date' => now(),
-        ]);
-
-        // Décrémenter les places
-        $course->decrement('remaining_seats');
-
-        return response()->json([
-            'message' => 'Cours réservé avec succès'
-        ], 200);
-    });
-}
+                'message' => 'Cours réservé avec succès'
+            ], 200);
+        });
+    }
 
 }

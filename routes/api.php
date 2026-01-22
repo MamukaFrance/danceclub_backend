@@ -4,20 +4,18 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\AuthController;
 
-// Auth routes
+use App\Http\Controllers\Api\ReserveController;
+
+// Auth routes (publiques)
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// Courses routes
-Route::post('/courses/{course}/reserve', [CourseController::class, 'reserveCourse']);
-
-use App\Http\Controllers\Api\ReserveController;
-
-//Route::middleware('auth:sanctum')->get('/my-reservations', [ReserveController::class, 'myReservations']);
-Route::apiResource('my-reservations', ReserveController::class);
-
-
-//Route::get('/courses', [CourseController::class, 'index']);
+// Public courses
 Route::apiResource('courses', CourseController::class);
 
-Route::apiResource('reserves', ReserveController::class);
+// Protected routes - authentification requise
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('/reservations', ReserveController::class);
+   // Route::apiResource('reserves', ReserveController::class);
+    Route::post('/courses/{course}/reserve', [CourseController::class, 'reserveCourse']);
+});

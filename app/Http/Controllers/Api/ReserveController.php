@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class ReserveController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Reservation::all());
+        $reservations = Reservation::where('user_id', $request->user()->id)->get();
+        return response()->json($reservations);
+        //return response()->json(Reservation::all());
     }
 
     public function store(Request $request)
@@ -44,22 +46,18 @@ class ReserveController extends Controller
             'status' => 'sometimes|string',
         ]);
 
-        $reserve->update($validated);
+        $reservation->update($validated);
 
-        return response()->json($reserve);
+        return response()->json($reservation);
     }
 
     public function destroy(Reservation $reservation)
     {
         $this->authorize('delete', $reservation);
         $reservation->delete();
+        $reservation->course->increment('remaining_seats');
+
 
         return response()->json(null, 204);
-    }
-
-    public function myReservations(Request $request)
-    {
-        $reservations = Reserve::where('user_id', $request->user()->id)->get();
-        return response()->json($reservations);
     }
 }
