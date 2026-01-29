@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ReserveController;
 
 // Auth routes (publiques)

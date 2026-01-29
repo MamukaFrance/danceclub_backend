@@ -11,9 +11,26 @@
         </p>
     </section>
 
+    @if(session('success'))
+        <div class="max-w-xl mx-auto mb-4 p-3 bg-green-100 text-green-800 rounded-lg text-center">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="errors">
+            <ul>
+                @foreach ($errors->all() as $err)
+                    <li class="max-w-xl mx-auto mb-4 p-3 bg-red-100 text-red-800 rounded-lg text-center">{{ $err }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+
     <!-- Formulaire -->
     <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-md">
-        <form method="POST" action="#">
+        <form method="POST" action="{{ route('mail.send') }}">
             @csrf
 
             <!-- Nom -->
@@ -25,6 +42,7 @@
                     type="text"
                     id="name"
                     name="name"
+                    value="{{ old('name') }}"
                     required
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900"
                 >
@@ -39,13 +57,14 @@
                     type="email"
                     id="email"
                     name="email"
+                    value="{{ old('email') }}"
                     required
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900"
                 >
             </div>
 
             <!-- Message -->
-            <div class="mb-6">
+            <div class="mb-2">
                 <label for="message" class="block mb-2 font-semibold text-gray-700">
                     Message
                 </label>
@@ -53,15 +72,19 @@
                     id="message"
                     name="message"
                     rows="5"
+                    placeholder="Votre message ici..."
+                    value="{{ old('message') }}"
                     required
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900"
                 ></textarea>
             </div>
 
+            
+
             <!-- Bouton -->
             <button
                 type="submit"
-                class="bg-gray-900 text-white px-6 py-3 rounded-md hover:bg-gray-800 transition font-semibold"
+                class="bg-blue-700 text-white px-6 py-3 rounded-md hover:bg-blue-900 transition font-semibold"
             >
                 Envoyer
             </button>

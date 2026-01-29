@@ -3,6 +3,8 @@
     <a class="hover:text-blue-900" href="{{ route('about') }}">À propos</a>
     <a class="hover:text-blue-900" href="{{ route('posts.index') }}">Posts</a>
     <a class="hover:text-blue-900" href="{{ route('posts.create') }}">Créer un post</a>
-    <a class="hover:text-blue-900" href="{{ route('contact') }}">Contact</a>
+    <a class="hover:text-blue-900" href="{{ route('mail.index') }}">Contact</a>
+    <!-- <a class="hover:text-blue-900" href="{{ route('mail.index') }}">Send email</a> -->
+
     <a class="hover:text-blue-900" href="{{ route('courses') }}">Courses</a>
 </nav>
