@@ -16,6 +16,8 @@ class CourseFactory extends Factory
      */
     public function definition(): array
     {
+        //$faker = \Faker\Factory::create('fr_FR'); // <-- français //
+        // il faut suprimer this partout
         $capacity = $this->faker->numberBetween(10, 30);
 
         return [

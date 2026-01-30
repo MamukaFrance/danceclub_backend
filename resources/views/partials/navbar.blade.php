@@ -5,6 +5,8 @@
     <a class="hover:text-blue-900" href="{{ route('posts.create') }}">Créer un post</a>
     <a class="hover:text-blue-900" href="{{ route('mail.index') }}">Contact</a>
     <!-- <a class="hover:text-blue-900" href="{{ route('mail.index') }}">Send email</a> -->
+    <a class="hover:text-blue-900" href="{{ route('login') }}">Se connecter</a>
+    <!-- <a class="hover:text-blue-900"  href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Déconnexion</a> -->
 
     <a class="hover:text-blue-900" href="{{ route('courses') }}">Courses</a>
 </nav>

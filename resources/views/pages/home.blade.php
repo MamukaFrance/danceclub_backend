@@ -5,21 +5,30 @@
 @section('content')
     <section class="relative w-full container mx-auto h-[60vh] overflow-hidden mb-10">
         <!-- Vidéo -->
-        <video 
+        <!-- <video 
             class="w-full h-[60vh] object-cover"
             autoplay
             muted
             loop
             playsinline
         >
-            <source src="/videos/hero.mp4" type="video/mp4">
+            <source src="https://youtu.be/hCDBeKenL94?si=_Jc9bhCQyiCuzIhp" type="video/mp4">
             Votre navigateur ne supporte pas la vidéo.
-        </video>
+        </video> -->
+
+        <iframe
+            class="w-full h-[60vh]"
+            src="https://www.youtube.com/embed/hCDBeKenL94?autoplay=1&mute=1&loop=1&playlist=hCDBeKenL94"
+            title="YouTube video"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
 
         <!-- Overlay texte -->
         <div class="absolute inset-0 flex items-center justify-center bg-black/40">
             <h2 class="text-white text-4xl font-bold">
-                Bienvenue au Dance Club 💃
+                Bienvenue au Dance Club
             </h2>
         </div>
     </section>

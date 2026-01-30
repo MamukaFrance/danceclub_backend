@@ -53,8 +53,12 @@ class PostsController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
+            if ($post->image) {
             \Storage::disk('public')->delete($post->image);
             $post->image = $request->file('image')->store('images', 'public');
+            } else {
+                $post->image = $request->file('image')->store('images', 'public');
+            }
         }
 
         $post->title = $request->title;
