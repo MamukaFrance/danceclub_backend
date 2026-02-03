@@ -66,7 +66,7 @@ class PostsController extends Controller
         $post->save();
 
         return redirect()->route('posts.index')
-                        ->with('success', 'Post mis à jour avec succès');
+                        ->with('success', 'Post '.$post->title.' mis à jour avec succès');
     }
 
 

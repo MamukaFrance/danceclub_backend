@@ -7,6 +7,7 @@
 {{-- Affichage des posts existants --}}
 <div class="mt-8">
     <h2 class="text-2xl font-bold mb-8 text-center">Tous les posts</h2>
+    <x-alert/>
     @if($posts->isEmpty())
         <p class="text-center text-gray-500">Aucun post pour le moment.</p>
     @else

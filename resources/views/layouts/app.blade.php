@@ -61,5 +61,25 @@
 
     <!-- JS -->
     <!-- <script src="{{ asset('js/app.js') }}"></script> -->
+    <script>
+        const burger = document.getElementById('burger-btn');
+        const menu = document.getElementById('menu');
+        const overlay = document.getElementById('overlay');
+        const links = menu.querySelectorAll('a');
+        const closeBtn = document.getElementById('close-menu');
+
+        function toggleMenu() {
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('translate-x-full');
+            overlay.classList.toggle('hidden');
+            burger.classList.toggle('open');
+        }
+
+        burger.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        closeBtn.addEventListener('click', toggleMenu);
+        links.forEach(link => link.addEventListener('click', toggleMenu));
+    </script>
+    <script src="//unpkg.com/alpinejs" defer></script>
 </body>
 </html>

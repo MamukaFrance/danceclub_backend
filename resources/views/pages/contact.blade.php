@@ -11,21 +11,7 @@
         </p>
     </section>
 
-    @if(session('success'))
-        <div class="max-w-xl mx-auto mb-4 p-3 bg-green-100 text-green-800 rounded-lg text-center">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if ($errors->any())
-        <div class="errors">
-            <ul>
-                @foreach ($errors->all() as $err)
-                    <li class="max-w-xl mx-auto mb-4 p-3 bg-red-100 text-red-800 rounded-lg text-center">{{ $err }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    <x-alert/>
 
 
     <!-- Formulaire -->
@@ -78,8 +64,6 @@
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900"
                 ></textarea>
             </div>
-
-            
 
             <!-- Bouton -->
             <button

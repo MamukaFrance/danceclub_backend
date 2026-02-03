@@ -6,17 +6,7 @@
 
 {{-- Affichage des cours existants --}}
 <h2 class="text-2xl font-bold text-center my-6">Cours disponibles</h2>
-@if (session('success'))
-        <div class="max-w-md mx-auto mb-4 rounded-lg text-center border bg-white border-green-500 text-green-700 p-3">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if ($errors->any())
-        <div class="max-w-md mx-auto mb-4 rounded bg-red-100 text-red-700 p-3">
-            {{ $errors->first() }}
-        </div>
-    @endif
+<x-alert/>
 <div class="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center mt-8">
     
     
