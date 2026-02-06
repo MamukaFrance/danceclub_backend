@@ -22,20 +22,25 @@ class ProfileController extends Controller
     public function update(UserRequest $request)
     {
         try {
-            $this->profilService->updateProfile(
+            $user = $this->profilService->updateProfile(
                 auth()->user(),
                 $request->validated()
             );
+            if (! $user->wasChanged()) {
+                return redirect()
+                    ->route('profile.edit')
+                    ->with('info', 'Aucune modification détectée');
+            }
 
             return redirect()
                 ->route('profile.edit')
                 ->with('success', 'Profil mis à jour avec succès');
 
         } catch (ProfileUpdateException $e) {
-            // Affiche le message métier au front
             return redirect()
-                ->route('profile.edit')
-                ->with('info', $e->getMessage());
+                ->back()
+                ->withInput()
+                ->with('error', $e->getMessage());
         }
     }
 }

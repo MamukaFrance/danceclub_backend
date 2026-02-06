@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
-use App\Interfaces\ProfilRepositoryInterface;
+use App\Repositories\Contracts\ProfilRepositoryInterface;
 
 class EloquentProfilRepository implements ProfilRepositoryInterface
 {
@@ -11,10 +11,5 @@ class EloquentProfilRepository implements ProfilRepositoryInterface
     {
         $user->save();
         return $user;
-    }
-    
-    public function getUser(int $userId): User
-    {
-        return User::findOrFail($userId);
     }
 }

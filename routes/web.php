@@ -16,7 +16,7 @@ Route::view('/about', 'pages.about')->name('about');
 
 
 // Course routes
-Route::get('/course', [CoursesController::class, 'index'])->name('course');
+Route::get('/course', [CoursesController::class, 'index'])->name('course.index');
 Route::post('/courses/{course}/reserve', [CoursesController::class, 'reserve'])->name('courses.reserve');
 
 // Contact form routes
