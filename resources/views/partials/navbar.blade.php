@@ -34,8 +34,8 @@
         <x-nav-link href="{{ route('about') }}">À propos</x-nav-link>
 
         @auth
-            <x-nav-link href="{{ route('posts.index') }}">Posts</x-nav-link>
-            <x-nav-link href="{{ route('posts.create') }}">Créer un post</x-nav-link>
+            <x-nav-link href="{{ route('post.index') }}">Posts</x-nav-link>
+            <x-nav-link href="{{ route('post.create') }}">Créer un post</x-nav-link>
             <x-nav-link href="{{ route('profile.edit') }}">Mon profil</x-nav-link>
         @endauth
 
@@ -48,9 +48,10 @@
                 </button>
             </form>
         @endauth
-        @if(!auth())
+        @guest
             <x-nav-link href="{{ route('login') }}">Se connecter</x-nav-link>
-        @endif
+        @endguest
+
        
     </div>
 </nav>

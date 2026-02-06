@@ -28,8 +28,8 @@
                         </p>
                     @endif
                     <div class="flex flex-wrap justify-between">
-                        <a type="button" href="{{ route('posts.edit', $post->id) }}" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded">Modifier</a>
-                        <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="inline">
+                        <a type="button" href="{{ route('post.edit', $post->id) }}" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded">Modifier</a>
+                        <form action="{{ route('post.destroy', $post->id) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
 

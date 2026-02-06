@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Interfaces\ProfilRepositoryInterface;
+use App\Repositories\EloquentProfilRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(ProfilRepositoryInterface::class, EloquentProfilRepository::class);
+        // $this->app->bind(PostRepositoryInterface::class, EloquentPostRepository::class);
+
     }
 
     /**

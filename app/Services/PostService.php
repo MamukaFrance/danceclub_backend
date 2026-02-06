@@ -1,0 +1,116 @@
+<?php
+
+namespace App\Services;
+
+use App\Repositories\Contracts\PostRepositoryInterface;
+use App\Models\Post;
+use App\Http\Requests\PostRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Collection;
+use Throwable;
+
+
+
+class PostService
+{
+    public function __construct(
+        protected PostRepositoryInterface $postRepository
+    ) {}
+
+    public function getAllPosts(): Collection
+    {
+        return $this->postRepository->all();
+    }
+
+     public function find(int $id): ?Post
+    {
+        return $this->postRepository->find($id);
+    }
+
+   public function create(PostRequest $request): Post
+    {
+        $data = $request->validated();
+       
+        try {
+            return DB::transaction(function () use ($request, $data) {
+                $this->handleImage($request, $data);
+                return $this->postRepository->create($data);
+            });
+
+        } catch (Throwable $e) {
+            Log::error('Post creation failed', [
+                'exception' => $e,
+                'data' => $data,
+            ]);
+
+            if (isset($data['image'])) {
+                Storage::disk('public')->delete($data['image']);
+            }
+
+            throw new PostException('Impossible de créer le post');
+
+        }
+    }
+
+    public function update(PostRequest $request, Post $post): Post
+    {
+        try {
+            return DB::transaction(function () use ($request, $post) {
+                // Validation
+                $data = $request->validated();
+                // Traitement de l'image
+                if ($request->hasFile('image')) {
+                    if ($post->image) {
+                        Storage::disk('public')->delete($post->image);
+                    }
+                    $this->handleImage($request, $data);
+                }
+                // Remplit sans sauvegarder
+                $post->fill($data);
+                // Aucune modification
+                if (! $post->isDirty()) {
+                    return $post;
+                }
+                // Sauvegarde
+                return $this->postRepository->update($post, $data);
+            });
+
+        } catch (Throwable $e) {
+            Log::error('Post update failed', [
+                'exception' => $e,
+                'post' => $post,
+            ]);
+
+            throw new PostException('Impossible de mettre à jour le post');
+        }        
+    }
+
+    public function delete(Post $post): bool
+    {
+        try {
+            if ($post->image) {
+            Storage::disk('public')->delete($post->image);
+        }
+        return $this->postRepository->delete($post);
+            
+        } catch (Throwable $e) {
+            Log::error('Post delete failed', [
+                'exception' => $e,
+                'post' => $post,
+            ]);
+
+            throw new PostException('Impossible de supprimer le post');
+        }
+
+       
+    }
+
+    private function handleImage(PostRequest $request, array &$data): void
+    {
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')
+                ->store('images', 'public');
+        }
+    }
+}

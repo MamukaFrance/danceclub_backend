@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\web\PostsController;
+use App\Http\Controllers\web\PostController;
 use App\Http\Controllers\web\CoursesController;
 use App\Http\Controllers\web\MailController;
 use App\Http\Controllers\web\ProfileController;
@@ -14,7 +14,6 @@ Route::view('/home', 'pages.home')->name('home');
 
 Route::view('/about', 'pages.about')->name('about');
 
-Route::resource('posts', PostsController::class);
 
 // Course routes
 Route::get('/course', [CoursesController::class, 'index'])->name('course');
@@ -34,7 +33,7 @@ Route::view('/register', 'auth.register')->name('register');
 Route::post('/register', [App\Http\Controllers\web\AuthController::class, 'register'])->name('register.post');
 
 Route::middleware('auth')->group(function () {
-    Route::resource('posts', PostsController::class);
+    Route::resource('post', PostController::class);
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');

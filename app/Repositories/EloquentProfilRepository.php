@@ -3,8 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use App\Interfaces\ProfilRepositoryInterface;
 
-class ProfilRepository
+class EloquentProfilRepository implements ProfilRepositoryInterface
 {
     public function updateUser(User $user): User
     {

@@ -2,16 +2,23 @@
 
 namespace App\Exceptions;
 
-use App\Exceptions\ProfileUpdateException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Throwable;
 
-class Handler extends \Illuminate\Foundation\Exceptions\Handler
+class Handler extends ExceptionHandler
 {
-    public function render($request, Throwable $e)
+    public function register(): void
     {
-        if ($e instanceof ProfileUpdateException) {
-            return back()->with('error', $e->getMessage());
-        }
+        $this->renderable(function (ProfileUpdateException $e, $request) {
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+        });
 
-        return parent::render($request, $e);
+        $this->renderable(function (PostException $e, $request) {
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+        });
     }
 }

@@ -123,4 +123,12 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    Enregistrer le Service Provider
+     */
+    // 'providers' => [
+    //     App\Providers\RepositoryServiceProvider::class,
+    // ],
+
+
 ];

@@ -24,7 +24,7 @@
     @endif
 
     {{-- Formulaire --}}
-    <form action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" 
+    <form action="{{ isset($post) ? route('post.update', $post) : route('post.store') }}" 
         method="POST" 
         enctype="multipart/form-data"
     >

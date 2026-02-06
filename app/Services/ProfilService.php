@@ -4,12 +4,12 @@ namespace App\Services;
 
 use App\Exceptions\ProfileUpdateException;
 use App\Models\User;
-use App\Repositories\ProfilRepository;
+use App\Interfaces\ProfilRepositoryInterface;
 
 class ProfilService
 {
     public function __construct(
-        protected ProfilRepository $profilRepository
+        protected ProfilRepositoryInterface $profilRepositoryInterface
     ){}
 
     public function updateProfile(User $user, array $data): User
@@ -24,7 +24,7 @@ class ProfilService
         }
 
         // 3. Persister
-        if (! $this->profilRepository->updateUser($user)) {
+        if (! $this->profilRepositoryInterface->updateUser($user)) {
             throw new ProfileUpdateException('Impossible de mettre à jour le profil');
         }
 
@@ -33,6 +33,6 @@ class ProfilService
 
     public function getUser(int $userId): User
     {
-        return $this->profilRepository->getUser($userId);
+        return $this->profilRepositoryInterface->getUser($userId);
     }
 }
