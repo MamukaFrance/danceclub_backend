@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\web\PostController;
 use App\Http\Controllers\web\CoursesController;
+use App\Http\Controllers\web\CourseController;
 use App\Http\Controllers\web\MailController;
 use App\Http\Controllers\web\ProfileController;
 
@@ -16,7 +17,8 @@ Route::view('/about', 'pages.about')->name('about');
 
 
 // Course routes
-Route::get('/course', [CoursesController::class, 'index'])->name('course.index');
+// Route::get('/course', [CourseController::class, 'index'])->name('course.index');
+Route::resource('course', CourseController::class);
 Route::post('/courses/{course}/reserve', [CoursesController::class, 'reserve'])->name('courses.reserve');
 
 // Contact form routes
@@ -40,3 +42,5 @@ Route::middleware('auth')->group(function () {
     });
 
 });
+
+Route::resource('event', \App\Http\Controllers\Web\EventController::class);

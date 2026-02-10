@@ -3,255 +3,255 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Artisan;
 
 class MakeCrud extends Command
 {
-    protected $signature = 'make:crud {name}';
-    protected $description = 'Create Controller, Service, Repository and Interface';
+    protected $signature = 'make:crud
+        {name}
+        {--force}
+        {--only=}
+        {--module=}
+        {--api}
+        {--web}';
+
+    protected $description = 'Generate full CRUD (Controller, Service, Repository, Interface, Views, Routes)';
+
+    /* ====================== HANDLE ====================== */
 
     public function handle()
     {
         $name = ucfirst($this->argument('name'));
+        $only = $this->option('only')
+            ? explode(',', $this->option('only'))
+            : ['controller','service','repository','interface','views','routes'];
 
         $this->createDirectories();
-        $this->createController($name);
-        $this->createService($name);
-        $this->createRepository($name);
-        $this->createInterface($name);
+
+        if (in_array('controller', $only)) $this->createController($name);
+        if (in_array('service', $only)) $this->createService($name);
+        if (in_array('repository', $only)) $this->createRepository($name);
+        if (in_array('interface', $only)) $this->createInterface($name);
+        if (in_array('views', $only)) $this->createViews($name);
+        if (in_array('routes', $only)) $this->createRoutes($name);
+
         $this->bindRepository($name);
 
-        $this->info("CRUD layers for {$name} created successfully.");
+        $this->info("✅ CRUD {$name} generated successfully");
     }
+
+    /* ====================== HELPERS ====================== */
+
+    private function module(): string
+    {
+        return $this->option('module')
+            ? ucfirst($this->option('module'))
+            : 'Web';
+    }
+
+    private function viewModule(): string
+    {
+        return strtolower($this->option('module') ?? 'web');
+    }
+
+    private function shouldCreate(string $path, string $label): bool
+    {
+        if (File::exists($path) && !$this->option('force')) {
+            $this->warn("⏭ {$label} exists, skipped");
+            return false;
+        }
+        return true;
+    }
+
+    private function renderStub(string $stub, array $data): string
+        {
+            $path = base_path("stubs/{$stub}");
+
+            if (!File::exists($path)) {
+                $this->error("Stub missing: {$stub}");
+                exit(1);
+            }
+
+            $content = File::get($path);
+
+            foreach ($data as $key => $value) {
+                $content = str_replace('{{ '.$key.' }}', $value, $content);
+            }
+
+            return $content;
+        }
+
 
     private function createDirectories()
     {
-        $paths = [
+        foreach ([
             app_path('Services'),
             app_path('Repositories'),
             app_path('Repositories/Contracts'),
-        ];
-
-        foreach ($paths as $path) {
-            if (!File::exists($path)) {
-                File::makeDirectory($path, 0755, true);
-            }
+            app_path("Http/Controllers/{$this->module()}"),
+        ] as $dir) {
+            File::ensureDirectoryExists($dir);
         }
     }
+
+    /* ====================== CONTROLLER ====================== */
 
     private function createController($name)
     {
         $varName = lcfirst($name);
-        $path = app_path('Http/Controllers/web');
+        $type = $this->option('api') ? 'api' : 'web';
+        $path = app_path("Http/Controllers/{$this->module()}/{$name}Controller.php");
 
-        if (!\File::exists($path)) {
-            \File::makeDirectory($path, 0755, true);
-        }
+        if (!$this->shouldCreate($path, "Controller")) return;
 
-        $content = <<<PHP
-    <?php
+        File::put($path, $this->renderStub(
+            "controller.{$type}.stub",
+            [
+                'name' => $name,
+                'module' => $this->module(),
+                'service' => "{$name}Service",
+                'view_path' => "{$this->viewModule()}.".strtolower($name),
+                'route' => strtolower($name),
+                'varName' => $varName
+            ]
+        ));
 
-    namespace App\Http\Controllers\web;
-
-    use App\Http\Controllers\Controller;
-    use App\Services\\{$name}Service;
-    use Illuminate\Http\Request;
-    use App\Models\\{$name};
-
-    class {$name}Controller extends Controller
-    {
-        public function __construct(
-            protected {$name}Service \${$varName}Service
-        ) {}
-
-        public function index()
-        {
-            \${$varName}s = \$this->{$varName}Service->getAllPosts();
-            return view('pages.{$varName}s', compact('{$varName}s'));
-        }
-
-        // Page pour créer un nouveau post
-        public function create()
-        {
-            return view('pages.create-{$varName}');
-        }
-
-        // Page pour éditer un post existant
-        public function edit({$name} \${$varName})
-        {
-            return view('pages.create-{$varName}', compact('{$varName}'));
-        }
-
-        // Sauvegarde d'un nouveau post
-        public function store(Request \$request)
-        {
-            \$data = \$request->validate([
-                'title' => 'required|string|max:255',
-                'content' => 'required|string',
-                'is_published' => 'boolean'
-            ]);
-
-            \$this->{$varName}Service->create(\$data);
-            return redirect()->route('{$varName}.index');
-        }
-
-        // Mise à jour d'un post existant
-        public function update(Request \$request, {$name} \${$varName})
-        {
-            \$data = \$request->validate([
-                'title' => 'required|string|max:255',
-                'content' => 'required|string',
-                'is_published' => 'boolean'
-            ]);
-
-            \$this->{$varName}Service->update(\${$varName}, \$data);
-
-            return redirect()->route('{$varName}.index');
-        }
-
-        // Supprimer un post
-        public function destroy({$name} \${$varName})
-        {
-            \$this->{$varName}Service->delete(\${$varName});
-            return redirect()->route('{$varName}.index');
-        }
-    }
-    PHP;
-
-        \File::put("{$path}/{$name}Controller.php", $content);
+        $this->info("✔ Controller created");
     }
 
+    /* ====================== SERVICE ====================== */
 
     private function createService($name)
     {
         $varName = lcfirst($name);
-        $content = <<<PHP
-<?php
+        $path = app_path("Services/{$name}Service.php");
 
-namespace App\Services;
+        if (!$this->shouldCreate($path, "Service")) return;
 
-use App\Repositories\Contracts\\{$name}RepositoryInterface;
-use App\Models\\{$name};
+        File::put($path, $this->renderStub(
+            'service.stub',
+            [
+                'name' => $name,
+                'varName' => $varName
+            ]
+        ));
 
-class {$name}Service
-{
-    public function __construct(
-        protected {$name}RepositoryInterface \${$varName}Repository
-    ) {}
-
-    public function getAllPosts(){
-        return \$this->{$varName}Repository->all();
+        $this->info("✔ Service created");
     }
 
-    public function find(int \$id): ?{$name}
-    {
-        return \$this->{$varName}Repository->find(\$id);
-    }
-
-    public function create(array \$data): {$name}
-    {
-        return \$this->{$varName}Repository->create(\$data);
-    }
-
-    public function update({$name} \${$varName}, array \$data): {$name}
-    {
-        return \$this->{$varName}Repository->update(\${$varName}, \$data);
-    }
-
-    public function delete({$name} \${$varName}): bool
-    {
-        return \$this->{$varName}Repository->delete(\${$varName});
-    }
-}
-PHP;
-
-        File::put(app_path("Services/{$name}Service.php"), $content);
-    }
+    /* ====================== REPOSITORY ====================== */
 
     private function createRepository($name)
     {
         $varName = lcfirst($name);
-        $content = <<<PHP
-<?php
+        $path = app_path("Repositories/Eloquent{$name}Repository.php");
 
-namespace App\Repositories;
+        if (!$this->shouldCreate($path, "Repository")) return;
 
-use App\Models\\{$name};
-use App\Repositories\Contracts\\{$name}RepositoryInterface;
+        File::put($path, $this->renderStub(
+            'repository.stub',
+            [
+                'name' => $name,
+                'varName' => $varName
+            ]
+        ));
 
-class Eloquent{$name}Repository implements {$name}RepositoryInterface
-{
-    public function create(array \$data): {$name}
-    {
-        return {$name}::create(\$data);
+        $this->info("✔ Repository created");
     }
 
-     public function all()
-    {
-        return {$name}::orderBy('created_at', 'desc')->get();
-    }
-
-    public function find(int \$id): ?{$name}
-    {
-        return {$name}::find(\$id);
-    }
-
-     public function update(Post \${$varName}, array \$data): {$name}
-    {
-        \${$varName}->update(\$data);
-        return \${$varName};
-    }
-
-     public function delete(Post \${$varName}): bool
-    {
-        return \${$varName}->delete();
-    }
-}
-PHP;
-
-        File::put(app_path("Repositories/Eloquent{$name}Repository.php"), $content);
-    }
+    /* ====================== INTERFACE ====================== */
 
     private function createInterface($name)
     {
         $varName = lcfirst($name);
-        $content = <<<PHP
-<?php
+        $path = app_path("Repositories/Contracts/{$name}RepositoryInterface.php");
 
-namespace App\Repositories\Contracts;
+        if (!$this->shouldCreate($path, "Interface")) return;
 
-use App\Models\\$name;
+        File::put($path, $this->renderStub(
+            'interface.stub',
+            [
+                'name' => $name,
+                'varName' => $varName
+            ]
+        ));
 
-interface {$name}RepositoryInterface
-{
-    public function create(array \$data): {$name};
-
-    public function all();
-
-    public function find(int \$id): ?{$name};
-
-    public function update({$name} \${$varName}, array \$data): {$name};
-
-    public function delete({$name} \${$varName}): bool;
-}
-PHP;
-
-        File::put(app_path("Repositories/Contracts/{$name}RepositoryInterface.php"), $content);
+        $this->info("✔ Interface created");
     }
+
+    /* ====================== VIEWS ====================== */
+
+    private function createViews($name)
+    {
+        if ($this->option('api')) return;
+
+        $varName = lcfirst($name);
+        $basePath = resource_path("views/{$this->viewModule()}/".strtolower($name));
+        File::ensureDirectoryExists($basePath);
+
+        foreach (['index','create','edit','show'] as $view) {
+            $path = "{$basePath}/{$view}.blade.php";
+
+            if (!$this->shouldCreate($path, "View {$view}")) continue;
+
+            File::put($path, $this->renderStub(
+                "views/{$view}.stub",
+                [
+                    'name' => $name,
+                    'route' => strtolower($name),
+                    'varName' => $varName,
+                ]
+            ));
+        }
+
+        $this->info("✔ Views created");
+    }
+
+    /* ====================== ROUTES ====================== */
+
+    private function createRoutes($name)
+    {
+        $routeFile = $this->option('api')
+            ? base_path('routes/api.php')
+            : base_path('routes/web.php');
+
+        $routes = File::get($routeFile);
+
+        if (str_contains($routes, "{$name}Controller")) {
+            $this->warn("⏭ Routes already exist");
+            return;
+        }
+
+        $stub = $this->option('api') ? 'routes.api.stub' : 'routes.web.stub';
+
+        File::append($routeFile, "\n".$this->renderStub(
+            $stub,
+            [
+                'route' => strtolower($name),
+                'name' => $name,
+                'module' => $this->module(),
+            ]
+        ));
+
+        $this->info("✔ Routes added");
+    }
+
+    /* ====================== BINDING ====================== */
 
     private function bindRepository($name)
     {
-        $providerPath = app_path('Providers/RepositoryServiceProvider.php');
+        $provider = app_path('Providers/RepositoryServiceProvider.php');
 
-        if (!File::exists($providerPath)) {
+        if (!File::exists($provider)) {
             Artisan::call('make:provider RepositoryServiceProvider');
         }
 
-        $providerContent = File::get($providerPath);
+        $content = File::get($provider);
 
-        if (!str_contains($providerContent, "{$name}RepositoryInterface")) {
-            $binding = <<<PHP
+        if (str_contains($content, "{$name}RepositoryInterface")) return;
+
+        $binding = <<<PHP
 
         \$this->app->bind(
             \\App\\Repositories\\Contracts\\{$name}RepositoryInterface::class,
@@ -259,13 +259,13 @@ PHP;
         );
 PHP;
 
-            $providerContent = str_replace(
-                "public function register(): void\n    {\n        //",
-                "public function register(): void\n    {{$binding}\n        //",
-                $providerContent
-            );
+        $content = str_replace(
+            "public function register(): void\n    {",
+            "public function register(): void\n    {{$binding}",
+            $content
+        );
 
-            File::put($providerPath, $providerContent);
-        }
+        File::put($provider, $content);
+        $this->info("✔ Repository binding added");
     }
 }

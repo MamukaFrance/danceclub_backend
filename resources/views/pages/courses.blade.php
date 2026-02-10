@@ -18,6 +18,14 @@
                 {{ $course->title }}
             </h3>
 
+             <!-- Bouton de réservation -->
+                <form class="flex justify-end my-4" action="{{route('courses.reserve', $course)}}" method="POST">
+                    @csrf
+                    <button type="submit" class="mt-4 max-w-sm rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 transition">
+                        Réserver
+                    </button>
+                </form>
+
             <!-- Description -->
             <p class="text-gray-600 leading-relaxed">
                 {{ $course->description }}
@@ -31,13 +39,28 @@
                 {{ $course->remaining_seats }} places restantes sur {{ $course->capacity }}.
             </p>
 
-            <!-- Bouton de réservation -->
-            <form action="{{route('courses.reserve', $course)}}" method="POST">
-                @csrf
-                <button type="submit" class="mt-4 max-w-sm rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 transition">
-                    Réserver
-                </button>
-            </form>
+            <div class="flex justify-between flex-wrap gap-2 mt-4 items-center">
+                <!-- Bouton de modification -->
+                <a href="{{ route('course.edit', $course) }}" class="mt-4 max-w-sm rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 transition">
+                    {{isset($course) ? 'Modifier' : 'Créer'}}
+                </a>
+
+               
+
+                <!-- Bouton de suppression -->
+                <form action="{{ route('course.destroy', $course) }}" method="POST" class="inline">
+                    @csrf
+                    @method('DELETE')
+
+                    <button
+                        type="submit"
+                        class="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        onclick="return confirm('Voulez-vous vraiment supprimer ce post ?')"
+                    >
+                        Supprimer
+                    </button>
+                </form>
+            </div>
         </div>
     @endforeach
 </div>

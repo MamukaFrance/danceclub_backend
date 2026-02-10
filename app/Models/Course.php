@@ -12,16 +12,16 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
-    'teacher_id', 
-    'title', 
-    'style',
-    'level',
-    'capacity',
-    'date',
-    'start_time',
-    'end_time',
-    'description',
-    'remaining_seats',
+        'teacher_id', 
+        'title', 
+        'style',
+        'level',
+        'capacity',
+        'date',
+        'start_time',
+        'end_time',
+        'description',
+        'remaining_seats',
     ];
 
 

@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Repositories\Contracts;
+
+use App\Models\{{ name }};
+
+interface {{ name }}RepositoryInterface
+{
+    public function all();
+
+    public function find(int $id): ?{{ name }};
+
+    public function create(array $data): {{ name }};
+
+    public function update({{ name }} ${{ varName }}, array $data): {{ name }};
+
+    public function delete({{ name }} ${{ varName }}): bool;
+
+}

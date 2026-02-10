@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Services;
+
+use App\Repositories\Contracts\{{ name }}RepositoryInterface;
+use App\Models\{{ name }};
+
+class {{ name }}Service
+{
+    public function __construct(
+        protected {{ name }}RepositoryInterface ${{ varName }}Repository
+    ) {}
+
+    public function getAll{{ name }}s(){
+        return $this->{{ varName }}Repository->all();
+    }
+
+    public function find(int $id): ?{{ name }}
+    {
+        return $this->{{ varName }}Repository->find($id);
+    }
+
+    public function create(array $data): {{ name }}
+    {
+        return $this->{{ varName }}Repository->create($data);
+    }
+
+    public function update({{ name }} ${{ varName }}, array $data): {{ name }}
+    {
+        return $this->{{ varName }}Repository->update(${{ varName }}, $data);
+    }
+
+    public function delete({{ name }} ${{ varName }}): bool
+    {
+        return $this->{{ varName }}Repository->delete(${{ varName }});
+    }
+}
+

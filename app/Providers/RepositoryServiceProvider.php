@@ -12,12 +12,20 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
+            \App\Repositories\Contracts\EventRepositoryInterface::class,
+            \App\Repositories\EloquentEventRepository::class
+        );
+        $this->app->bind(
             \App\Repositories\Contracts\PostRepositoryInterface::class,
             \App\Repositories\EloquentPostRepository::class
         );
         $this->app->bind(   
             \App\Repositories\Contracts\ProfilRepositoryInterface::class,
             \App\Repositories\EloquentProfilRepository::class
+        );
+        $this->app->bind(
+            \App\Repositories\Contracts\CourseRepositoryInterface::class,
+            \App\Repositories\EloquentCourseRepository::class
         );
     }
 

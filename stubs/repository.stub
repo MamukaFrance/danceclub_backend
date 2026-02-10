@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Repositories;
+
+use App\Models\{{ name }};
+use App\Repositories\Contracts\{{ name }}RepositoryInterface;
+
+class Eloquent{{ name }}Repository implements {{ name }}RepositoryInterface
+{
+     public function all()
+    {
+        return {{ name }}::orderBy('created_at', 'desc')->get();
+    }
+
+    public function find(int $id): ?{{ name }}
+    {
+        return {{ name }}::find($id);
+    }
+
+    public function create(array $data): {{ name }}
+    {
+        return {{ name }}::create($data);
+    }
+
+     public function update({{ name }} ${{ varName }}, array $data): {{ name }}
+    {
+        ${{ varName }}->update($data);
+        return ${{ varName }};
+    }
+
+     public function delete({{ name }} ${{ varName }}): bool
+    {
+        return ${{ varName }}->delete();
+    }
+}

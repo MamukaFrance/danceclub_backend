@@ -19,7 +19,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('course');
+            return redirect()->route('course.index');
         }
 
         return back()->withErrors('Identifiants invalides');
