@@ -4,9 +4,8 @@ namespace App\Http\Controllers\{{ module }};
 
 use App\Http\Controllers\Controller;
 use App\Services\{{ name }}Service;
-
- use Illuminate\Http\Request;
-    use App\Models\{{ name }};
+use Illuminate\Http\Request;
+use App\Models\{{ name }};
 
     class {{ name }}Controller extends Controller
     {
@@ -30,11 +29,7 @@ use App\Services\{{ name }}Service;
         // Sauvegarde d'un nouveau {{ varName }}
         public function store(Request $request)
         {
-            $data = $request->validate([
-                'title' => 'required|string|max:255',
-                'date' => 'required|date',
-                'capacity' => 'required|integer',
-            ]);
+            $data = $request->validated();
 
             $this->{{ varName }}Service->create($data);
             return redirect()->route('{{ varName }}.index');
@@ -56,11 +51,7 @@ use App\Services\{{ name }}Service;
         // Mise à jour d'un {{ varName }} existant
         public function update(Request $request, {{ name }} ${{ varName }})
         {
-            $data = $request->validate([
-                'title' => 'required|string|max:255',
-                'date' => 'required|date',
-                'capacity' => 'required|integer',
-            ]);
+            $data = $request->validated();
 
             $this->{{ varName }}Service->update(${{ varName }}, $data);
 

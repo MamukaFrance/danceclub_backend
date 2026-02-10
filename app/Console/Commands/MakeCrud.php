@@ -25,7 +25,7 @@ class MakeCrud extends Command
         $name = ucfirst($this->argument('name'));
         $only = $this->option('only')
             ? explode(',', $this->option('only'))
-            : ['controller','service','repository','interface','views','routes'];
+            : ['controller','service','repository','interface','views','routes', 'request'];
 
         $this->createDirectories();
 
@@ -35,6 +35,7 @@ class MakeCrud extends Command
         if (in_array('interface', $only)) $this->createInterface($name);
         if (in_array('views', $only)) $this->createViews($name);
         if (in_array('routes', $only)) $this->createRoutes($name);
+        if (in_array('request', $only)) $this->createRequest($name);
 
         $this->bindRepository($name);
 
@@ -90,6 +91,7 @@ class MakeCrud extends Command
             app_path('Repositories'),
             app_path('Repositories/Contracts'),
             app_path("Http/Controllers/{$this->module()}"),
+            app_path("Http/Requests"),
         ] as $dir) {
             File::ensureDirectoryExists($dir);
         }
@@ -119,6 +121,26 @@ class MakeCrud extends Command
 
         $this->info("✔ Controller created");
     }
+
+    /* ====================== REQUEST ====================== */
+    private function createRequest($name)
+    {
+        $varName = lcfirst($name);
+        $path = app_path("Http/Requests/{$name}Request.php");
+
+        if (!$this->shouldCreate($path, "Request")) return;
+
+        File::put($path, $this->renderStub(
+            'request.stub',
+            [
+                'name' => $name,
+                'varName' => $varName,
+            ]
+        ));
+
+        $this->info("✔ Request created");
+    }
+
 
     /* ====================== SERVICE ====================== */
 

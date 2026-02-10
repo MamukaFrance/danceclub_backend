@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Services\EventService;
-
- use Illuminate\Http\Request;
-    use App\Models\Event;
+use Illuminate\Http\Request;
+use App\Models\Event;
 
     class EventController extends Controller
     {
@@ -30,11 +29,7 @@ use App\Services\EventService;
         // Sauvegarde d'un nouveau event
         public function store(Request $request)
         {
-            $data = $request->validate([
-                'title' => 'required|string|max:255',
-                'date' => 'required|date',
-                'capacity' => 'required|integer',
-            ]);
+            $data = $request->validated();
 
             $this->eventService->create($data);
             return redirect()->route('event.index');
@@ -56,11 +51,7 @@ use App\Services\EventService;
         // Mise à jour d'un event existant
         public function update(Request $request, Event $event)
         {
-            $data = $request->validate([
-                'title' => 'required|string|max:255',
-                'date' => 'required|date',
-                'capacity' => 'required|integer',
-            ]);
+            $data = $request->validated();
 
             $this->eventService->update($event, $data);
 
