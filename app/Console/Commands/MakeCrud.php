@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 
 class MakeCrud extends Command
 {
@@ -22,13 +23,14 @@ class MakeCrud extends Command
 
     public function handle()
     {
-        $name = ucfirst($this->argument('name'));
+        $name = Str::studly($this->argument('name'));
         $only = $this->option('only')
             ? explode(',', $this->option('only'))
-            : ['controller','service','repository','interface','views','routes', 'request'];
+            : ['model','controller','request','service','repository','interface','views','routes'];
 
         $this->createDirectories();
 
+        if (in_array('model', $only)) $this->createModel($name);
         if (in_array('controller', $only)) $this->createController($name);
         if (in_array('service', $only)) $this->createService($name);
         if (in_array('repository', $only)) $this->createRepository($name);
@@ -70,8 +72,7 @@ class MakeCrud extends Command
             $path = base_path("stubs/{$stub}");
 
             if (!File::exists($path)) {
-                $this->error("Stub missing: {$stub}");
-                exit(1);
+                throw new \RuntimeException("Stub missing: {$stub}");
             }
 
             $content = File::get($path);
@@ -97,10 +98,30 @@ class MakeCrud extends Command
         }
     }
 
+    /* ====================== MODEL ====================== */
+    private function createModel(string $name)
+    {
+        $path = app_path("Models/{$name}.php");
+
+        if (!$this->shouldCreate($path, "Model")) return;
+
+        Artisan::call('make:model', [
+            'name' => $name,
+            '--migration' => true,
+            '--factory' => true,
+        ]);
+
+        $this->info("✔ Model created");
+    }
+
+
     /* ====================== CONTROLLER ====================== */
 
     private function createController($name)
     {
+        $model = $name;
+        $modelVar = lcfirst($name);
+        $table = Str::snake(Str::plural($name));
         $varName = lcfirst($name);
         $type = $this->option('api') ? 'api' : 'web';
         $path = app_path("Http/Controllers/{$this->module()}/{$name}Controller.php");
@@ -123,24 +144,53 @@ class MakeCrud extends Command
     }
 
     /* ====================== REQUEST ====================== */
-    private function createRequest($name)
+
+    private function createRequest(string $name)
     {
-        $varName = lcfirst($name);
+        $modelClass = "App\\Models\\{$name}";
+
+        // Vérifie que le Model existe
+        if (!class_exists($modelClass)) {
+            $this->error("❌ Model {$name} does not exist. Create it first.");
+            return;
+        }
+
+        $model = new $modelClass;
+
+        // Génère les règles automatiquement depuis $fillable
+        $rules = [];
+        foreach ($model->getFillable() as $field) {
+            // Tu peux personnaliser le type si tu veux
+            $rules[$field] = 'required';
+        }
+
         $path = app_path("Http/Requests/{$name}Request.php");
 
         if (!$this->shouldCreate($path, "Request")) return;
 
-        File::put($path, $this->renderStub(
-            'request.stub',
-            [
-                'name' => $name,
-                'varName' => $varName,
-            ]
-        ));
+        // Génère le contenu du stub avec les règles
+        $stubContent = $this->renderStub('request.stub', [
+            'name' => $name,
+            'varName' => lcfirst($name),
+            'rules' => $this->formatRules($rules),
+        ]);
+
+        File::put($path, $stubContent);
 
         $this->info("✔ Request created");
     }
 
+    /**
+     * Formate les règles pour le stub
+     */
+    private function formatRules(array $rules): string
+    {
+        $lines = [];
+        foreach ($rules as $field => $rule) {
+            $lines[] = "        '{$field}' => '{$rule}',";
+        }
+        return "[\n" . implode("\n", $lines) . "\n        ]";
+    }
 
     /* ====================== SERVICE ====================== */
 
@@ -223,11 +273,12 @@ class MakeCrud extends Command
                     'name' => $name,
                     'route' => strtolower($name),
                     'varName' => $varName,
+                    'form_fields' => $this->generateInputs($name),
                 ]
             ));
+            $this->info("✔ view $view created");
         }
-
-        $this->info("✔ Views created");
+        
     }
 
     /* ====================== ROUTES ====================== */
@@ -290,4 +341,92 @@ PHP;
         File::put($provider, $content);
         $this->info("✔ Repository binding added");
     }
+
+    /* ====================== INPUT ====================== */
+    private function generateInputs(string $name): string
+    {
+        $model = "App\\Models\\{$name}";
+        if (!class_exists($model)) return '';
+
+        $fields = (new $model)->getFillable();
+        $var = lcfirst($name);
+
+        $html = [];
+
+        foreach ($fields as $field) {
+
+            if (in_array($field, ['id', 'created_at', 'updated_at'])) {
+                continue;
+            }
+
+            $label = ucfirst(str_replace('_', ' ', $field));
+
+            // textarea
+            if (str_contains($field, 'description') || str_contains($field, 'content')) {
+                $html[] = <<<BLADE
+    <div class="mb-4">
+        <label class="block mb-1 font-semibold text-gray-700">{$label}</label>
+
+        <textarea
+            name="{$field}"
+            class="w-full px-4 py-2 border rounded-md"
+        >{{ old('{$field}', \${$var}->{$field} ?? '') }}</textarea>
+
+        @error('{$field}')
+            <p class="mt-1 text-sm text-red-500">{{ \$message }}</p>
+        @enderror
+    </div>
+    BLADE;
+                continue;
+            }
+
+            // select for foreign key
+            if (str_ends_with($field, '_id')) {
+                $html[] = <<<BLADE
+    <div class="mb-4">
+        <label class="block mb-1 font-semibold text-gray-700">{$label}</label>
+
+        <select name="{$field}" class="w-full px-4 py-2 border rounded-md">
+            {{-- options --}}
+        </select>
+
+        @error('{$field}')
+            <p class="mt-1 text-sm text-red-500">{{ \$message }}</p>
+        @enderror
+    </div>
+    BLADE;
+                continue;
+            }
+
+            $type = match (true) {
+                str_contains($field, 'date') => 'date',
+                str_contains($field, 'price'),
+                str_contains($field, 'capacity') => 'number',
+                default => 'text',
+            };
+
+            $html[] = <<<BLADE
+    <div class="mb-4">
+        <label for="{$field}" class="block mb-1 font-semibold text-gray-700">
+            {$label}
+        </label>
+
+        <input
+            type="{$type}"
+            id="{$field}"
+            name="{$field}"
+            value="{{ old('{$field}', \${$var}->{$field} ?? '') }}"
+            class="w-full px-4 py-2 border rounded-md @error('{$field}') border-red-500 @enderror"
+        >
+
+        @error('{$field}')
+            <p class="mt-1 text-sm text-red-500">{{ \$message }}</p>
+        @enderror
+    </div>
+    BLADE;
+        }
+
+        return implode("\n", $html);
+    }
+
 }

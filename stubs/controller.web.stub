@@ -5,6 +5,7 @@ namespace App\Http\Controllers\{{ module }};
 use App\Http\Controllers\Controller;
 use App\Services\{{ name }}Service;
 use Illuminate\Http\Request;
+use App\Http\Requests\{{ name }}Request;
 use App\Models\{{ name }};
 
     class {{ name }}Controller extends Controller
@@ -27,7 +28,7 @@ use App\Models\{{ name }};
         }
 
         // Sauvegarde d'un nouveau {{ varName }}
-        public function store(Request $request)
+        public function store({{ name }}Request $request)
         {
             $data = $request->validated();
 
@@ -49,7 +50,7 @@ use App\Models\{{ name }};
         }
 
         // Mise à jour d'un {{ varName }} existant
-        public function update(Request $request, {{ name }} ${{ varName }})
+        public function update({{ name }}Request $request, {{ name }} ${{ varName }})
         {
             $data = $request->validated();
 

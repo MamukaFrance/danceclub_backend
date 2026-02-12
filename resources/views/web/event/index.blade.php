@@ -1,13 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Liste de events')
+@section('title', 'Liste de Events')
 
 @section('content')
     <div class="max-w-5xl mx-auto px-4 py-6">
-
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">
-            Liste des events
-        </h1>
+        <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">
+                Liste des Events
+            </h1>
+            <a href="{{ route('event.create') }}"
+                type="button"
+            class="px-3 py-1.5 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition">
+            Créer un Event
+            </a>
+        </div>
 
         @if ($events->count())
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

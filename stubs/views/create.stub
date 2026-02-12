@@ -1,28 +1,25 @@
 @extends('layouts.app')
 
-@section('title', 'Create {{ varName }}')
+@section('title', 'Create {{ name }}')
 
 @section('content')
-    <h1>Create {{ varName }}</h1>
+    <div class="max-w-xl mx-auto px-4 py-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">
+            Create {{ name }}
+        </h1>
 
-    <form method="POST" action="{{ route('{{ varName }}.store') }}">
-        @csrf
+        <form method="POST" 
+            action="{{ route('{{ route }}.store') }}"
+            class="bg-white shadow-md rounded-xl p-6 space-y-5">
+            @csrf
 
-        <div>
-            <label for="title">Title</label>
-            <input type="text" name="title">
-        </div>
+            {{ form_fields }}
 
-        <div>
-            <label for="date">Date</label>
-            <input type="Date" name="date">
-        </div>
-
-        <div>
-            <label for="capacity">Capacity</label>
-            <input type="integer" name="capacity">
-        </div>
-
-        <button type="submit">Save</button>
-    </form>
+            <button type="submit" 
+                class="mr-4 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                Save
+            </button>
+            <a href="{{ route('{{ route }}.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 rounded-lg">Retour à la liste</a>
+        </form>
+    </div>
 @endsection

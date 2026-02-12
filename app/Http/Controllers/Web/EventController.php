@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Services\EventService;
 use Illuminate\Http\Request;
+use App\Http\Requests\EventRequest;
 use App\Models\Event;
 
     class EventController extends Controller
@@ -27,7 +28,7 @@ use App\Models\Event;
         }
 
         // Sauvegarde d'un nouveau event
-        public function store(Request $request)
+        public function store(EventRequest $request)
         {
             $data = $request->validated();
 
@@ -49,7 +50,7 @@ use App\Models\Event;
         }
 
         // Mise à jour d'un event existant
-        public function update(Request $request, Event $event)
+        public function update(EventRequest $request, Event $event)
         {
             $data = $request->validated();
 

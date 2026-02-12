@@ -10,9 +10,12 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
-    public function __construct(
-        protected PostService $postService
-    ) {}
+    public function __construct(protected PostService $postService) 
+    {
+        //  // Middleware pour sécuriser certaines routes par rôle
+        // $this->middleware('role:admin|editor')->only(['create', 'store', 'edit', 'update']);
+        // $this->middleware('role:admin')->only(['destroy']); // seule suppression réservée à l'admin   
+    }
 
     public function index()
     {

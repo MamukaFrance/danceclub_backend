@@ -1,13 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Liste de {{ varName }}s')
+@section('title', 'Liste de {{ name }}s')
 
 @section('content')
     <div class="max-w-5xl mx-auto px-4 py-6">
-
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">
-            Liste des {{ varName }}s
-        </h1>
+        <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">
+                Liste des {{ name }}s
+            </h1>
+            <a href="{{ route('{{ route }}.create') }}"
+                type="button"
+            class="px-3 py-1.5 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition">
+            Créer un {{ name }}
+            </a>
+        </div>
 
         @if (${{ varName }}s->count())
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -27,17 +33,17 @@
                         </p>
 
                         <div class="flex gap-2">
-                            <a href="{{ route('{{ varName }}.show', ${{ varName }}) }}"
+                            <a href="{{ route('{{ route }}.show', ${{ varName }}) }}"
                             class="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition">
                                 Voir
                             </a>
 
-                            <a href="{{ route('{{ varName }}.edit', ${{ varName }}) }}"
+                            <a href="{{ route('{{ route }}.edit', ${{ varName }}) }}"
                             class="px-3 py-1.5 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
                                 Éditer
                             </a>
 
-                            <form action="{{ route('{{ varName }}.destroy', ${{ varName }}) }}"
+                            <form action="{{ route('{{ route }}.destroy', ${{ varName }}) }}"
                                 method="POST"
                                 onsubmit="return confirm('Supprimer cet {{ varName }} ?')">
                                 @csrf

@@ -1,28 +1,121 @@
 @extends('layouts.app')
 
-@section('title', 'Create event')
+@section('title', 'Create Event')
 
 @section('content')
-    <h1>Create event</h1>
+    <div class="max-w-xl mx-auto px-4 py-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">
+            Create Event
+        </h1>
 
-    <form method="POST" action="{{ route('event.store') }}">
-        @csrf
+        <form method="POST" 
+            action="{{ route('event.store') }}"
+            class="bg-white shadow-md rounded-xl p-6 space-y-5">
+            @csrf
 
-        <div>
-            <label for="title">Title</label>
-            <input type="text" name="title">
-        </div>
+            <div class="mb-4">
+    <label for="title" class="block mb-1 font-semibold text-gray-700">
+        Title
+    </label>
 
-        <div>
-            <label for="date">Date</label>
-            <input type="Date" name="date">
-        </div>
+    <input
+        type="text"
+        id="title"
+        name="title"
+        value="{{ old('title', $event->title ?? '') }}"
+        class="w-full px-4 py-2 border rounded-md @error('title') border-red-500 @enderror"
+    >
 
-        <div>
-            <label for="capacity">Capacity</label>
-            <input type="integer" name="capacity">
-        </div>
+    @error('title')
+        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+    @enderror
+</div>
+<div class="mb-4">
+    <label class="block mb-1 font-semibold text-gray-700">Description</label>
 
-        <button type="submit">Save</button>
-    </form>
+    <textarea
+        name="description"
+        class="w-full px-4 py-2 border rounded-md"
+    >{{ old('description', $event->description ?? '') }}</textarea>
+
+    @error('description')
+        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+    @enderror
+</div>
+<div class="mb-4">
+    <label for="date" class="block mb-1 font-semibold text-gray-700">
+        Date
+    </label>
+
+    <input
+        type="date"
+        id="date"
+        name="date"
+        value="{{ old('date', $event->date ?? '') }}"
+        class="w-full px-4 py-2 border rounded-md @error('date') border-red-500 @enderror"
+    >
+
+    @error('date')
+        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+    @enderror
+</div>
+<div class="mb-4">
+    <label for="start_time" class="block mb-1 font-semibold text-gray-700">
+        Start time
+    </label>
+
+    <input
+        type="text"
+        id="start_time"
+        name="start_time"
+        value="{{ old('start_time', $event->start_time ?? '') }}"
+        class="w-full px-4 py-2 border rounded-md @error('start_time') border-red-500 @enderror"
+    >
+
+    @error('start_time')
+        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+    @enderror
+</div>
+<div class="mb-4">
+    <label for="end_time" class="block mb-1 font-semibold text-gray-700">
+        End time
+    </label>
+
+    <input
+        type="text"
+        id="end_time"
+        name="end_time"
+        value="{{ old('end_time', $event->end_time ?? '') }}"
+        class="w-full px-4 py-2 border rounded-md @error('end_time') border-red-500 @enderror"
+    >
+
+    @error('end_time')
+        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+    @enderror
+</div>
+<div class="mb-4">
+    <label for="capacity" class="block mb-1 font-semibold text-gray-700">
+        Capacity
+    </label>
+
+    <input
+        type="number"
+        id="capacity"
+        name="capacity"
+        value="{{ old('capacity', $event->capacity ?? '') }}"
+        class="w-full px-4 py-2 border rounded-md @error('capacity') border-red-500 @enderror"
+    >
+
+    @error('capacity')
+        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+    @enderror
+</div>
+
+            <button type="submit" 
+                class="mr-4 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                Save
+            </button>
+            <a href="{{ route('event.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 rounded-lg">Retour à la liste</a>
+        </form>
+    </div>
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PostRequest extends FormRequest
 {
@@ -11,6 +12,10 @@ class PostRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        // $user = Auth::user();
+
+        // // Exemple : Seuls les "admins" et "redacteurs" peuvent créer un post
+        // return $user && $user->hasAnyRole(['admin', 'editor']);
         return true;
     }
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Détails de event')
+@section('title', 'Détails de Event')
 
 @section('content')
 <div class="max-w-xl mx-auto px-4 py-6">
