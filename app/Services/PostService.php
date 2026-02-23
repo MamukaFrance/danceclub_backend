@@ -8,6 +8,8 @@ use App\Http\Requests\PostRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use App\Exceptions\PostException;
 use Throwable;
 
 
@@ -35,6 +37,7 @@ class PostService
         try {
             return DB::transaction(function () use ($request, $data) {
                 $this->handleImage($request, $data);
+                $data['user_id'] = auth()->user()->id;
                 return $this->postRepository->create($data);
             });
 

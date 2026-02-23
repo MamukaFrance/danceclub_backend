@@ -40,7 +40,7 @@ class CourseService
         return $this->courseRepository->delete($course);
     }
 
-    public function getAllTeacgers(){
-        return $this->courseRepository->getAllTeacgers();
+    public function getAllTeachers(){
+        return $this->courseRepository->getAllTeachers();
     }       
 }

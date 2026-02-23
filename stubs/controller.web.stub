@@ -7,63 +7,96 @@ use App\Services\{{ name }}Service;
 use Illuminate\Http\Request;
 use App\Http\Requests\{{ name }}Request;
 use App\Models\{{ name }};
+use App\Exceptions\{{ name }}Exception;
 
     class {{ name }}Controller extends Controller
     {
-        public function __construct(
-            protected {{ name }}Service ${{ varName }}Service
-        ) {}
+        public function __construct(protected {{ name }}Service ${{ varName }}Service)
+        {             
+            $this->authorizeResource({{ name }}::class, '{{ varName }}');
+            $this->middleware('role:admin|editor')->only(['create', 'store', 'edit', 'update']);
+        }
 
         // Liste des {{ varName }}s
         public function index()
         {
             ${{ varName }}s = $this->{{ varName }}Service->getAll{{ name }}s();
-            return view('web.{{ varName }}.index', compact('{{ varName }}s'));
+            return view('web.{{ route }}.index', compact('{{ varName }}s'));
         }
 
         // Page pour créer un nouveau {{ varName }}
         public function create()
         {
-            return view('web.{{ varName }}.create');
+            return view('web.{{ route }}.create');
         }
 
         // Sauvegarde d'un nouveau {{ varName }}
         public function store({{ name }}Request $request)
         {
-            $data = $request->validated();
-
-            $this->{{ varName }}Service->create($data);
-            return redirect()->route('{{ varName }}.index');
+            try {
+                $data = $request->validated();
+                $this->{{ varName }}Service->create($data);
+                return redirect()
+                    ->route('{{ route }}.index')
+                    ->with('success', '{{ name }} ajouté avec succès');
+            } catch ({{ name }}Exception $e) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', $e->getMessage());
+            }
         }
 
         // Page pour afficher un {{ varName }}
         public function show({{ name }} ${{ varName }})
         {
-            return view('web.{{ varName }}.show', compact('{{ varName }}'));
+            return view('web.{{ route }}.show', compact('{{ varName }}'));
         }
 
 
         // Page pour éditer un {{ varName }} existant
         public function edit({{ name }} ${{ varName }})
         {
-            return view('web.{{ varName }}.edit', compact('{{ varName }}'));
+            return view('web.{{ route }}.edit', compact('{{ varName }}'));
         }
 
         // Mise à jour d'un {{ varName }} existant
         public function update({{ name }}Request $request, {{ name }} ${{ varName }})
         {
-            $data = $request->validated();
+            try {
+                $data = $request->validated();
+                ${{ varName }} = $this->{{ varName }}Service->update(${{ varName }}, $data);
+                if (! ${{ varName }}->wasChanged()) {
+                    return redirect()
+                        ->route('{{ route }}.index')
+                        ->with('info', 'Aucune modification détectée');
+                }
 
-            $this->{{ varName }}Service->update(${{ varName }}, $data);
-
-            return redirect()->route('{{ varName }}.index');
+                return redirect()
+                    ->route('{{ route }}.index')
+                    ->with('success', '{{ name }} mis à jour avec succès');
+            } catch ({{ name }}Exception $e) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', $e->getMessage());
+            } 
         }
 
         // Supprimer un {{ varName }}
         public function destroy({{ name }} ${{ varName }})
         {
-            $this->{{ varName }}Service->delete(${{ varName }});
-            return redirect()->route('{{ varName }}.index');
+            try{
+                $this->{{ varName }}Service->delete(${{ varName }});
+                return redirect()
+                    ->route('{{ route }}.index')
+                    ->with('success', '{{ name }} supprimé avec succès');;
+            }catch ({{ name }}Exception $e) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', $e->getMessage());
+            }
         }
     }
 

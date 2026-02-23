@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\EventParticipantStatus;
 
 class EventParticipant extends Model
 {
@@ -13,6 +14,10 @@ class EventParticipant extends Model
         'event_id',
         'user_id',
         'status',
+    ];
+
+    protected $casts = [
+        'status' => EventParticipantStatus::class,
     ];
 
     public function event() { return $this->belongsTo(Event::class); }

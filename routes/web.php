@@ -6,6 +6,12 @@ use App\Http\Controllers\web\CoursesController;
 use App\Http\Controllers\web\CourseController;
 use App\Http\Controllers\web\MailController;
 use App\Http\Controllers\web\ProfileController;
+use App\Http\Controllers\web\EventController;
+use App\Http\Controllers\web\AuthController;
+use App\Http\Controllers\web\EventParticipantController;
+
+// Welcome route
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,7 +24,7 @@ Route::view('/about', 'pages.about')->name('about');
 
 // Course routes
 // Route::get('/course', [CourseController::class, 'index'])->name('course.index');
-Route::resource('course', CourseController::class);
+
 Route::post('/courses/{course}/reserve', [CoursesController::class, 'reserve'])->name('courses.reserve');
 
 // Contact form routes
@@ -29,18 +35,26 @@ Route::middleware('auth')->group(function () {
 
 // Auth routes
 Route::view('/login', 'auth.login')->name('login');
-Route::post('/login', [App\Http\Controllers\web\AuthController::class, 'login'])->name('login.post');
-Route::post('/logout', [App\Http\Controllers\web\AuthController::class, 'logout'])->name('logout');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::view('/register', 'auth.register')->name('register');
-Route::post('/register', [App\Http\Controllers\web\AuthController::class, 'register'])->name('register.post');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
 Route::middleware('auth')->group(function () {
+    Route::resource('event', EventController::class);
+    Route::post('/event/{event}/participe', [EventController::class, 'participe'])->name('event.participe');
     Route::resource('post', PostController::class);
-    Route::middleware('auth')->group(function () {
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    });
+    Route::resource('course', CourseController::class);
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
 });
 
-Route::resource('event', \App\Http\Controllers\Web\EventController::class);
+Route::resource('eventparticipant', EventParticipantController::class)
+    ->parameters(['eventparticipant' => 'eventParticipant']);
+
+Route::post('/events/{event}/register', [EventParticipantController::class, 'register'])
+    ->name('eventparticipant.register');
+
+Route::post('/participants/{participant}/cancel', [EventParticipantController::class, 'cancel'])
+    ->name('eventparticipant.cancel');

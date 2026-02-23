@@ -40,8 +40,7 @@ class CoursesController extends Controller
 
             // Créer la réservation
             $course->reservations()->create([
-                // 'user_id' => $request->user()->id,
-                'user_id' => 1,
+                'user_id' => $request->user()->id,
                 'reservation_date' => now(),
             ]);
 

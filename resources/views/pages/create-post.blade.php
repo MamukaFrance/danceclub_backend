@@ -4,25 +4,10 @@
 
 @section('content')
 <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-md my-16">
-
-    {{-- Message flash succès --}}
-    @if(session('success'))
-        <div class="mb-4 p-4 bg-green-100 text-green-800 rounded-md">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    {{-- Affichage des erreurs de validation --}}
-    @if($errors->any())
-        <div class="mb-4 p-4 bg-red-100 text-red-800 rounded-md">
-            <ul class="list-disc pl-5">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
+    <x-alert/>
+     <h2 class="text-2xl font-bold mb-6 text-center">
+        {{ isset($post) ? 'Modifier un post' : 'Créer un post' }}
+    </h2>
     {{-- Formulaire --}}
     <form action="{{ isset($post) ? route('post.update', $post) : route('post.store') }}" 
         method="POST" 

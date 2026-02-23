@@ -4,32 +4,57 @@ namespace App\Repositories;
 
 use App\Models\{{ name }};
 use App\Repositories\Contracts\{{ name }}RepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+
 
 class Eloquent{{ name }}Repository implements {{ name }}RepositoryInterface
 {
-     public function all()
+
+    public function __construct(
+        protected {{ name }} $model
+    ) {}
+
+    /**
+    * @return Collection<int, {{ name }}>
+    */
+     public function all() : Collection
     {
-        return {{ name }}::orderBy('created_at', 'desc')->get();
+        return $this->model
+        ->orderBy('created_at', 'desc')
+        ->get();
+    }
+
+    public function paginate(int $perPage = 10, string $orderBy = 'created_at'): LengthAwarePaginator
+    {
+        return $this->model
+            ->orderBy($orderBy, 'desc')
+            ->paginate($perPage);
     }
 
     public function find(int $id): ?{{ name }}
     {
-        return {{ name }}::find($id);
+        return $this->model->find($id);
+    }
+
+    public function findOrFail(int $id): {{ name }}
+    {
+        return $this->model->findOrFail($id);
     }
 
     public function create(array $data): {{ name }}
     {
-        return {{ name }}::create($data);
+        return $this->model->create($data);
     }
 
      public function update({{ name }} ${{ varName }}, array $data): {{ name }}
     {
         ${{ varName }}->update($data);
-        return ${{ varName }};
+        return ${{ varName }}->refresh();
     }
 
      public function delete({{ name }} ${{ varName }}): bool
     {
-        return ${{ varName }}->delete();
+        return (bool) ${{ varName }}->delete();
     }
 }

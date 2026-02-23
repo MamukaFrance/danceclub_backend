@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use App\Services\ProfilService;
-use App\Interfaces\ProfilRepositoryInterface;
+use App\Repositories\Contracts\ProfilRepositoryInterface;
 use App\Models\User;
 use App\Exceptions\ProfileUpdateException;
 

@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Contracts\Auth\Access\Authorizable;
 
 class User extends Authenticatable
 {
-     use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens, HasRoles;
 
     // Champs remplissables
     protected $fillable = [
@@ -18,7 +20,6 @@ class User extends Authenticatable
         'password',
         'phone',
         'avatar',
-        'role',
         'api_token'
     ];
 
@@ -35,6 +36,12 @@ class User extends Authenticatable
     ];
 
     // 🔗 Relations
+
+    // Un utilisateur peut étre un etudiant
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
 
      // Un utilisateur peut avoir plusieurs professeurs
     public function teachers()
@@ -64,5 +71,23 @@ class User extends Authenticatable
     public function eventParticipants()
     {
         return $this->hasMany(EventParticipant::class);
+    }
+
+    // Posts
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    // Cours
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
+
+    // Événements
+    public function events()
+    {
+        return $this->hasMany(Event::class);
     }
 }

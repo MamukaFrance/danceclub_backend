@@ -4,32 +4,59 @@ namespace App\Repositories;
 
 use App\Models\Event;
 use App\Repositories\Contracts\EventRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+
+
 
 class EloquentEventRepository implements EventRepositoryInterface
 {
-     public function all()
+
+    public function __construct(
+        protected Event $model
+    ) {}
+
+    /**
+    * @return Collection<int, Event>
+    */
+     public function all() : Collection
     {
-        return Event::orderBy('created_at', 'desc')->get();
+        return $this->model
+        ->orderBy('created_at', 'desc')
+        ->get();
+    }
+
+    public function paginate(int $perPage = 10, string $orderBy = 'created_at'): LengthAwarePaginator
+    {
+        return $this->model
+            ->orderBy($orderBy, 'desc')
+            ->paginate($perPage);
     }
 
     public function find(int $id): ?Event
     {
-        return Event::find($id);
+        return $this->model->find($id);
+    }
+
+    public function findOrFail(int $id): Event
+    {
+        return $this->model->findOrFail($id);
     }
 
     public function create(array $data): Event
     {
-        return Event::create($data);
+        return $this->model->create($data);
     }
 
      public function update(Event $event, array $data): Event
     {
         $event->update($data);
-        return $event;
+        return $event->refresh();
     }
 
      public function delete(Event $event): bool
     {
-        return $event->delete();
+        return (bool) $event->delete();
     }
+
 }

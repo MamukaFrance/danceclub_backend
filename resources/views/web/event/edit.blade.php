@@ -8,6 +8,7 @@
         <h1 class="text-2xl font-bold text-gray-800 mb-6">
             Edit Event
         </h1>
+        <x-alert/>
 
         <form method="POST"
             action="{{ route('event.update', $event) }}"

@@ -17,7 +17,7 @@ class MakeCrud extends Command
         {--api}
         {--web}';
 
-    protected $description = 'Generate full CRUD (Controller, Service, Repository, Interface, Views, Routes)';
+    protected $description = 'Generate full CRUD ( Model, Controller, Request, Exception, Service, Repository, Interface, Views, Routes)';
 
     /* ====================== HANDLE ====================== */
 
@@ -26,20 +26,23 @@ class MakeCrud extends Command
         $name = Str::studly($this->argument('name'));
         $only = $this->option('only')
             ? explode(',', $this->option('only'))
-            : ['model','controller','request','service','repository','interface','views','routes'];
+            : ['model','controller','request', 'policy','exception','service','repository','interface','views','routes'];
 
         $this->createDirectories();
 
         if (in_array('model', $only)) $this->createModel($name);
         if (in_array('controller', $only)) $this->createController($name);
+        if (in_array('request', $only)) $this->createRequest($name);
+        if (in_array('policy', $only)) $this->createPolicy($name);
+        if (in_array('exception', $only)) $this->createException($name);
         if (in_array('service', $only)) $this->createService($name);
         if (in_array('repository', $only)) $this->createRepository($name);
         if (in_array('interface', $only)) $this->createInterface($name);
         if (in_array('views', $only)) $this->createViews($name);
         if (in_array('routes', $only)) $this->createRoutes($name);
-        if (in_array('request', $only)) $this->createRequest($name);
-
+        
         $this->bindRepository($name);
+        // $this->bindException($name);
 
         $this->info("✅ CRUD {$name} generated successfully");
     }
@@ -50,7 +53,7 @@ class MakeCrud extends Command
     {
         return $this->option('module')
             ? ucfirst($this->option('module'))
-            : 'Web';
+            : 'web';
     }
 
     private function viewModule(): string
@@ -93,6 +96,8 @@ class MakeCrud extends Command
             app_path('Repositories/Contracts'),
             app_path("Http/Controllers/{$this->module()}"),
             app_path("Http/Requests"),
+            app_path("Exceptions"),
+            app_path("Policies"),
         ] as $dir) {
             File::ensureDirectoryExists($dir);
         }
@@ -147,6 +152,10 @@ class MakeCrud extends Command
 
     private function createRequest(string $name)
     {
+        $path = app_path("Http/Requests/{$name}Request.php");
+
+        if (!$this->shouldCreate($path, "Request")) return;
+
         $modelClass = "App\\Models\\{$name}";
 
         // Vérifie que le Model existe
@@ -163,10 +172,6 @@ class MakeCrud extends Command
             // Tu peux personnaliser le type si tu veux
             $rules[$field] = 'required';
         }
-
-        $path = app_path("Http/Requests/{$name}Request.php");
-
-        if (!$this->shouldCreate($path, "Request")) return;
 
         // Génère le contenu du stub avec les règles
         $stubContent = $this->renderStub('request.stub', [
@@ -190,6 +195,45 @@ class MakeCrud extends Command
             $lines[] = "        '{$field}' => '{$rule}',";
         }
         return "[\n" . implode("\n", $lines) . "\n        ]";
+    }
+
+    /* ====================== POLICY ====================== */
+
+    private function createPolicy($name)
+    {
+        $varName = lcfirst($name);
+        $path = app_path("Policies/{$name}Policy.php");
+
+        if (!$this->shouldCreate($path, "Policy")) return;
+
+        File::put($path, $this->renderStub(
+            'policy.stub',
+            [
+                'name' => $name,
+                'varName' => $varName,
+            ]
+        ));
+
+        $this->info("✔ Policy created");
+    }
+
+    /* ====================== Exception ====================== */
+
+
+    private function createException($name)
+    {
+        $path = app_path("Exceptions/{$name}Exception.php");
+
+        if (!$this->shouldCreate($path, "Exception")) return;
+
+        File::put($path, $this->renderStub(
+            'exception.stub',
+            [
+                'name' => $name,
+            ]
+        ));
+
+        $this->info("✔ Exception created");
     }
 
     /* ====================== SERVICE ====================== */
@@ -274,6 +318,7 @@ class MakeCrud extends Command
                     'route' => strtolower($name),
                     'varName' => $varName,
                     'form_fields' => $this->generateInputs($name),
+                    'index_fields' => $this->generateIndexFields($name),
                 ]
             ));
             $this->info("✔ view $view created");
@@ -322,7 +367,10 @@ class MakeCrud extends Command
 
         $content = File::get($provider);
 
-        if (str_contains($content, "{$name}RepositoryInterface")) return;
+        if (str_contains($content, "{$name}RepositoryInterface")){
+            $this->warn("⏭ Repository binding already exist");
+            return;
+        } 
 
         $binding = <<<PHP
 
@@ -340,6 +388,41 @@ PHP;
 
         File::put($provider, $content);
         $this->info("✔ Repository binding added");
+    }
+
+    private function bindException($name)
+    {
+        $exception = app_path('Exceptions/Handler.php');
+
+        if (!File::exists($exception)) {
+            Artisan::call('make:exception Handler');
+        }
+
+        $content = File::get($exception);
+
+        if (str_contains($content, "{$name}Exception")){
+            $this->warn("⏭ Exception binding already exist");
+            return;
+        } 
+
+        $binding = <<<PHP
+
+        \$this->renderable(function ({$name}Exception \$e, \$request) {
+            return back()
+                ->withInput()
+                ->with('error', \$e->getMessage());
+        });
+        
+PHP;    
+
+        $content = str_replace(
+            "public function register(): void\n    {",
+            "public function register(): void\n    {{$binding}",
+            $content
+        );
+
+        File::put($exception, $content);
+        $this->info("✔ Exception binding added");
     }
 
     /* ====================== INPUT ====================== */
@@ -428,5 +511,64 @@ PHP;
 
         return implode("\n", $html);
     }
+
+
+
+    /* ====================== INDEX ====================== */
+
+    private function generateIndexFields(string $name): string
+{
+    $model = "App\\Models\\{$name}";
+    if (!class_exists($model)) return '';
+
+    $fields = (new $model)->getFillable();
+    $var = lcfirst($name);
+
+    $html = [];
+
+    foreach ($fields as $field) {
+
+        if (in_array($field, ['id', 'created_at', 'updated_at'])) {
+            continue;
+        }
+
+        $label = ucfirst(str_replace('_', ' ', $field));
+
+        // Foreign key
+        if (str_ends_with($field, '_id')) {
+
+            $relation = str_replace('_id', '', $field);
+
+            $html[] = <<<BLADE
+        <p class="text-sm text-gray-600">
+            <span class="font-medium">{$label} :</span>
+            {{ \${$var}->{$relation}->name ?? '-' }}
+        </p>
+BLADE;
+            continue;
+        }
+
+        // Date formatting
+        if (str_contains($field, 'date')) {
+            $html[] = <<<BLADE
+        <p class="text-sm text-gray-600">
+            <span class="font-medium">{$label} :</span>
+            {{ \${$var}->{$field}?->format('d/m/Y') }}
+        </p>
+BLADE;
+            continue;
+        }
+
+        // Default display
+        $html[] = <<<BLADE
+        <p class="text-sm text-gray-600">
+            <span class="font-medium">{$label} :</span>
+            {{ \${$var}->{$field} }}
+        </p>
+BLADE;
+    }
+
+    return implode("\n", $html);
+}
 
 }

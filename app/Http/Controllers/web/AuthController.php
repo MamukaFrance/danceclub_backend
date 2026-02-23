@@ -46,11 +46,13 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => 'student',
         ]);
+
+        // Attribution du rôle via Spatie (le rôle 'user' est celui défini dans votre Seeder)
+        $user->assignRole('user');
 
         Auth::login($user);
 
-        return redirect()->route('courses');
+        return redirect()->route('course.index');
     }
 }

@@ -4,6 +4,10 @@ namespace App\Services;
 
 use App\Repositories\Contracts\{{ name }}RepositoryInterface;
 use App\Models\{{ name }};
+use App\Exceptions\{{ name }}Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\QueryException;
 
 class {{ name }}Service
 {
@@ -15,24 +19,58 @@ class {{ name }}Service
         return $this->{{ varName }}Repository->all();
     }
 
-    public function find(int $id): ?{{ name }}
+    public function find(int $id): {{ name }}
     {
-        return $this->{{ varName }}Repository->find($id);
+        $model = $this->{{ varName }}Repository->find($id);
+        if (!$model) {
+            throw new {{ name }}Exception('{{ name }} introuvable.', 404);
+        }
+        return $model;
     }
 
     public function create(array $data): {{ name }}
     {
-        return $this->{{ varName }}Repository->create($data);
+        try {
+            return DB::transaction(function () use ($data) {
+                return $this->{{ varName }}Repository->create($data);
+            });
+        } catch (QueryException $e) {
+            throw new {{ name }}Exception(
+                'Erreur lors de la création du {{ name }}.',
+                500,
+                $e
+            );
+        } 
     }
 
     public function update({{ name }} ${{ varName }}, array $data): {{ name }}
     {
-        return $this->{{ varName }}Repository->update(${{ varName }}, $data);
+        try {
+            return DB::transaction(function () use (${{ varName }}, $data) {
+                return $this->{{ varName }}Repository->update(${{ varName }}, $data);
+            });    
+        } catch (QueryException $e) {
+            throw new {{ name }}Exception(
+                'Erreur lors de la mise à jour du {{ name }}.',
+                500,
+                $e
+            );
+        }
     }
 
     public function delete({{ name }} ${{ varName }}): bool
     {
-        return $this->{{ varName }}Repository->delete(${{ varName }});
+        try {
+            return DB::transaction(function () use (${{ varName }}) {
+                return $this->{{ varName }}Repository->delete(${{ varName }});
+            });
+        } catch (QueryException $e) {
+            throw new {{ name }}Exception(
+                'Erreur lors de la suppression du {{ name }}.',
+                500,
+                $e
+            );
+        }
     }
 }
 

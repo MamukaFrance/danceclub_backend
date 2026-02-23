@@ -10,6 +10,7 @@ class Event extends Model
     use HasFactory;
 
 
+
     protected $fillable = [
         'title',
         'description',
@@ -17,8 +18,23 @@ class Event extends Model
         'start_time',
         'end_time',
         'capacity',
+        'user_id',
     ];
 
 
     public function eventParticipants() { return $this->hasMany(EventParticipant::class); }
+    public function user() { return $this->belongsTo(User::class); }
+
+
+    // Vérifie si l'événement est complet
+    public function getIsFullAttribute(): bool
+    {
+        return $this->eventParticipants()->where('status', 'registered')->count() >= $this->capacity;
+    }
+
+    // Nombre de places restantes
+    public function getRemainingSeatsAttribute(): int
+    {
+        return $this->capacity - $this->eventParticipants()->where('status', 'registered')->count();
+    }
 }

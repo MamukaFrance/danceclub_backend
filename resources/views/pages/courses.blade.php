@@ -41,17 +41,19 @@
 
             <div class="flex justify-between flex-wrap gap-2 mt-4 items-center">
                 <!-- Bouton de modification -->
-                <a href="{{ route('course.edit', $course) }}" class="mt-4 max-w-sm rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 transition">
-                    {{isset($course) ? 'Modifier' : 'Créer'}}
-                </a>
+                @can('update', $course)
+                    <a href="{{ route('course.edit', $course) }}" class="mt-4 max-w-sm rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 transition">
+                        {{isset($course) ? 'Modifier' : 'Créer'}}
+                    </a>
+                @endcan
 
                
 
                 <!-- Bouton de suppression -->
+                 @can('delete', $course)
                 <form action="{{ route('course.destroy', $course) }}" method="POST" class="inline">
                     @csrf
                     @method('DELETE')
-
                     <button
                         type="submit"
                         class="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
@@ -60,6 +62,7 @@
                         Supprimer
                     </button>
                 </form>
+                @endcan
             </div>
         </div>
     @endforeach

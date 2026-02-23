@@ -28,25 +28,26 @@
                         </p>
                     @endif
                     <div class="flex flex-wrap justify-between">
-                        <a type="button" href="{{ route('post.edit', $post->id) }}" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded">Modifier</a>
-                        <form action="{{ route('post.destroy', $post->id) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
+                        @can('update', $post)
+                            <a type="button" href="{{ route('post.edit', $post->id) }}" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded">
+                                Modifier
+                            </a>
+                        @endcan
+                        @can('delete', $post)
+                            <form action="{{ route('post.destroy', $post->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
 
-                            <button
-                                type="submit"
-                                class="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                                onclick="return confirm('Voulez-vous vraiment supprimer ce post ?')"
-                            >
-                                Supprimer
-                            </button>
-                        </form>
+                                <button
+                                    type="submit"
+                                    class="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                    onclick="return confirm('Voulez-vous vraiment supprimer ce post ?')"
+                                >
+                                    Supprimer
+                                </button>
+                            </form>
+                        @endcan
                     </div>
-                     <!-- Debug: Afficher le chemin réel -->
-                    <!-- @if($post->image)
-                        <p class="text-xs text-blue-500">Chemin DB: {{ $post->image }}</p>
-                        <p class="text-xs text-green-500">URL finale: {{ asset($post->image) }}</p>
-                    @endif -->
                 </x-card>
             @endforeach
         </div>

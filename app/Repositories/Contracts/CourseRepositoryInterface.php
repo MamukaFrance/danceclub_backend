@@ -16,5 +16,5 @@ interface CourseRepositoryInterface
 
     public function delete(Course $course): bool;
 
-    public function getAllTeacgers();
+    public function getAllTeachers();
 }

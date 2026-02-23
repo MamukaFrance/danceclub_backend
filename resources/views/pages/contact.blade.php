@@ -13,7 +13,6 @@
 
     <x-alert/>
 
-
     <!-- Formulaire -->
     <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-md">
         <form method="POST" action="{{ route('mail.send') }}">

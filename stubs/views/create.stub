@@ -7,6 +7,7 @@
         <h1 class="text-2xl font-bold text-gray-800 mb-6">
             Create {{ name }}
         </h1>
+        <x-alert/>
 
         <form method="POST" 
             action="{{ route('{{ route }}.store') }}"

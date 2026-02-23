@@ -5,6 +5,7 @@
 @section('content')
 <div class="max-w-xl mx-auto px-4 py-6">
     <h1 class="text-2xl font-bold mb-4">{{ $event->title }}</h1>
+    <x-alert/>
 
     {{-- Informations de l'événement --}}
     <div class="bg-white shadow rounded-lg p-6 mb-6">

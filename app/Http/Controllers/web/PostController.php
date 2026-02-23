@@ -7,14 +7,15 @@ use App\Services\PostService;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use App\Exceptions\PostException;
 
 class PostController extends Controller
 {
     public function __construct(protected PostService $postService) 
     {
-        //  // Middleware pour sécuriser certaines routes par rôle
-        // $this->middleware('role:admin|editor')->only(['create', 'store', 'edit', 'update']);
-        // $this->middleware('role:admin')->only(['destroy']); // seule suppression réservée à l'admin   
+         // Middleware pour sécuriser certaines routes par rôle
+        $this->middleware('role:admin|editor')->only(['create', 'store', 'edit', 'update']);
+        // $this->middleware('role:admin')->only(['destroy']); // seule suppression réservée à l'admin 
     }
 
     public function index()

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Course;
 use App\Models\User;
+use App\Models\Teacher;
 use App\Repositories\Contracts\CourseRepositoryInterface;
 
 class EloquentCourseRepository implements CourseRepositoryInterface
@@ -34,8 +35,9 @@ class EloquentCourseRepository implements CourseRepositoryInterface
         return $course->delete();
     }
 
-    public function getAllTeacgers()
+    public function getAllTeachers()
     {
-        return User::where('role', 'teacher')->get();
+        // return User::where('role', 'teacher')->get();
+        return Teacher::with('user')->get();
     }
 }
