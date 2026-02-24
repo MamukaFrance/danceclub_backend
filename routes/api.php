@@ -11,7 +11,10 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 // Public courses
-Route::apiResource('courses', CourseController::class);
+// Route::apiResource('courses', CourseController::class);
+Route::name('api.')->group(function () {
+    Route::apiResource('courses', CourseController::class);
+});
 
 // Protected routes - authentification requise
 Route::middleware('auth:sanctum')->group(function () {

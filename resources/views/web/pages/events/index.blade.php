@@ -9,7 +9,7 @@
 
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Liste des Events</h1>
-        <a href="{{ route('event.create') }}"
+        <a href="{{ route('events.create') }}"
             class="px-3 py-1.5 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition">
             Créer un Event
         </a>
@@ -37,7 +37,7 @@
 
                 @if ($participant && $participant->status === EventParticipantStatus::REGISTERED)
 
-                    <form action="{{ route('eventparticipant.cancel', $participant) }}" method="POST">
+                    <form action="{{ route('eventparticipants.cancel', $participant) }}" method="POST">
                         @csrf
                         <button 
                             type="submit"
@@ -48,7 +48,7 @@
 
                 @else
 
-                    <form action="{{ route('eventparticipant.register', $event) }}" method="POST">
+                    <form action="{{ route('eventparticipants.register', $event) }}" method="POST">
                         @csrf
                         <button 
                             type="submit"
@@ -78,19 +78,19 @@
             </p>
 
             <div class="flex gap-2">
-                <a href="{{ route('event.show', $event) }}"
+                <a href="{{ route('events.show', $event) }}"
                     class="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition">
                     Voir
                 </a>
 
                 @can('update', $event)
-                    <a href="{{ route('event.edit', $event) }}"
+                    <a href="{{ route('events.edit', $event) }}"
                     class="px-3 py-1.5 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
                         Éditer
                     </a>
                 @endcan
 
-                <form action="{{ route('event.destroy', $event) }}"
+                <form action="{{ route('events.destroy', $event) }}"
                     method="POST"
                     onsubmit="return confirm('Supprimer cet event ?')">
                     @csrf

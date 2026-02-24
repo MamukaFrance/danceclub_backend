@@ -22,13 +22,13 @@ use App\Exceptions\EventException;
         public function index()
         {
             $events = $this->eventService->getAllEvents();
-            return view('web.event.index', compact('events'));
+            return view('web.pages.events.index', compact('events'));
         }
 
         // Page pour créer un nouveau event
         public function create()
         {
-            return view('web.event.create');
+            return view('web.pages.events.create');
         }
 
         // Sauvegarde d'un nouveau event
@@ -38,7 +38,7 @@ use App\Exceptions\EventException;
                 $data = $request->validated();
                 $this->eventService->create($data);
                 return redirect()
-                    ->route('event.index')
+                    ->route('events.index')
                     ->with('success', 'Event ajouté avec succès');
             } catch (EventException $e) {
                 return redirect()
@@ -51,14 +51,14 @@ use App\Exceptions\EventException;
         // Page pour afficher un event
         public function show(Event $event)
         {
-            return view('web.event.show', compact('event'));
+            return view('web.pages.events.show', compact('event'));
         }
 
 
         // Page pour éditer un event existant
         public function edit(Event $event)
         {
-            return view('web.event.edit', compact('event'));
+            return view('web.pages.events.edit', compact('event'));
         }
 
         // Mise à jour d'un event existant
@@ -69,12 +69,12 @@ use App\Exceptions\EventException;
                 $event = $this->eventService->update($event, $data);
                 if (! $event->wasChanged()) {
                     return redirect()
-                        ->route('event.index')
+                        ->route('events.index')
                         ->with('info', 'Aucune modification détectée');
                 }
 
                 return redirect()
-                    ->route('event.index')
+                    ->route('events.index')
                     ->with('success', 'Event mis à jour avec succès');
             } catch (EventException $e) {
                 return redirect()
@@ -90,7 +90,7 @@ use App\Exceptions\EventException;
             try{
                 $this->eventService->delete($event);
                 return redirect()
-                    ->route('event.index')
+                    ->route('events.index')
                     ->with('success', 'Event supprimé avec succès');;
             }catch (EventException $e) {
                 return redirect()

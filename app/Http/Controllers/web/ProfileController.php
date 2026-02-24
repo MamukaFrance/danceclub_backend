@@ -14,7 +14,7 @@ class ProfileController extends Controller
 
     public function edit()
     {
-        return view('pages.profile', [
+        return view('web.pages.profile', [
             'user' => auth()->user()
         ]);
     }

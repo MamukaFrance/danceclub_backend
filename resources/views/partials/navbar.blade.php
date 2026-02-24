@@ -34,10 +34,9 @@
         <x-nav-link href="{{ route('about') }}">À propos</x-nav-link>
 
         @auth
-            <x-nav-link href="{{ route('post.index') }}">Posts</x-nav-link>
-            <x-nav-link href="{{ route('post.create') }}">Créer un post</x-nav-link>
-            <x-nav-link href="{{ route('course.index') }}">Courses</x-nav-link>
-            <x-nav-link href="{{ route('course.create') }}">Créer une course</x-nav-link>
+            <x-nav-link href="{{ route('posts.index') }}">Posts</x-nav-link>
+            <x-nav-link href="{{ route('courses.index') }}">Courses</x-nav-link>
+            <x-nav-link href="{{ route('events.index') }}">Événements</x-nav-link>
             <x-nav-link href="{{ route('profile.edit') }}">Mon profil</x-nav-link>
         @endauth
 

@@ -8,7 +8,7 @@
             <h1 class="text-2xl font-bold text-gray-800">
                 Liste des EventParticipants
             </h1>
-            <a href="{{ route('eventparticipant.create') }}"
+            <a href="{{ route('eventparticipants.create') }}"
                 type="button"
             class="px-3 py-1.5 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition">
             Créer un EventParticipant
@@ -36,18 +36,18 @@
         </p>
 
                         <div class="flex gap-2 mt-4">
-                            <a href="{{ route('eventparticipant.show', $eventParticipant) }}"
+                            <a href="{{ route('eventparticipants.show', $eventParticipant) }}"
                             class="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition">
                                 Voir
                             </a>
                             @can('update', $eventParticipant)
-                                <a href="{{ route('eventparticipant.edit', $eventParticipant) }}"
+                                <a href="{{ route('eventparticipants.edit', $eventParticipant) }}"
                                 class="px-3 py-1.5 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
                                     Éditer
                                 </a>
                             @endcan
 
-                            <form action="{{ route('eventparticipant.destroy', $eventParticipant) }}"
+                            <form action="{{ route('eventparticipants.destroy', $eventParticipant) }}"
                                 method="POST"
                                 onsubmit="return confirm('Supprimer cet eventParticipant ?')">
                                 @csrf

@@ -8,7 +8,7 @@
             <h1 class="text-2xl font-bold text-gray-800">
                 Liste des {{ name }}s
             </h1>
-            <a href="{{ route('{{ route }}.create') }}"
+            <a href="{{ route('{{ route }}s.create') }}"
                 type="button"
             class="px-3 py-1.5 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition">
             Créer un {{ name }}
@@ -25,18 +25,18 @@
                         {{ index_fields }}
 
                         <div class="flex gap-2 mt-4">
-                            <a href="{{ route('{{ route }}.show', ${{ varName }}) }}"
+                            <a href="{{ route('{{ route }}s.show', ${{ varName }}) }}"
                             class="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition">
                                 Voir
                             </a>
                             @can('update', ${{ varName }})
-                                <a href="{{ route('{{ route }}.edit', ${{ varName }}) }}"
+                                <a href="{{ route('{{ route }}s.edit', ${{ varName }}) }}"
                                 class="px-3 py-1.5 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
                                     Éditer
                                 </a>
                             @endcan
 
-                            <form action="{{ route('{{ route }}.destroy', ${{ varName }}) }}"
+                            <form action="{{ route('{{ route }}s.destroy', ${{ varName }}) }}"
                                 method="POST"
                                 onsubmit="return confirm('Supprimer cet {{ varName }} ?')">
                                 @csrf

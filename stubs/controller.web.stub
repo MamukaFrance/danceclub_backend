@@ -21,13 +21,13 @@ use App\Exceptions\{{ name }}Exception;
         public function index()
         {
             ${{ varName }}s = $this->{{ varName }}Service->getAll{{ name }}s();
-            return view('web.{{ route }}.index', compact('{{ varName }}s'));
+            return view('web.pages.{{ route }}s.index', compact('{{ varName }}s'));
         }
 
         // Page pour créer un nouveau {{ varName }}
         public function create()
         {
-            return view('web.{{ route }}.create');
+            return view('web.pages.{{ route }}s.create');
         }
 
         // Sauvegarde d'un nouveau {{ varName }}
@@ -37,7 +37,7 @@ use App\Exceptions\{{ name }}Exception;
                 $data = $request->validated();
                 $this->{{ varName }}Service->create($data);
                 return redirect()
-                    ->route('{{ route }}.index')
+                    ->route('{{ route }}s.index')
                     ->with('success', '{{ name }} ajouté avec succès');
             } catch ({{ name }}Exception $e) {
                 return redirect()
@@ -50,14 +50,14 @@ use App\Exceptions\{{ name }}Exception;
         // Page pour afficher un {{ varName }}
         public function show({{ name }} ${{ varName }})
         {
-            return view('web.{{ route }}.show', compact('{{ varName }}'));
+            return view('web.pages.{{ route }}.show', compact('{{ varName }}'));
         }
 
 
         // Page pour éditer un {{ varName }} existant
         public function edit({{ name }} ${{ varName }})
         {
-            return view('web.{{ route }}.edit', compact('{{ varName }}'));
+            return view('web.pages.{{ route }}s.edit', compact('{{ varName }}'));
         }
 
         // Mise à jour d'un {{ varName }} existant
@@ -68,12 +68,12 @@ use App\Exceptions\{{ name }}Exception;
                 ${{ varName }} = $this->{{ varName }}Service->update(${{ varName }}, $data);
                 if (! ${{ varName }}->wasChanged()) {
                     return redirect()
-                        ->route('{{ route }}.index')
+                        ->route('{{ route }}s.index')
                         ->with('info', 'Aucune modification détectée');
                 }
 
                 return redirect()
-                    ->route('{{ route }}.index')
+                    ->route('{{ route }}s.index')
                     ->with('success', '{{ name }} mis à jour avec succès');
             } catch ({{ name }}Exception $e) {
                 return redirect()
@@ -89,7 +89,7 @@ use App\Exceptions\{{ name }}Exception;
             try{
                 $this->{{ varName }}Service->delete(${{ varName }});
                 return redirect()
-                    ->route('{{ route }}.index')
+                    ->route('{{ route }}s.index')
                     ->with('success', '{{ name }} supprimé avec succès');;
             }catch ({{ name }}Exception $e) {
                 return redirect()

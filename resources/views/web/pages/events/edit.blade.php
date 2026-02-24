@@ -1,18 +1,20 @@
 @extends('layouts.app')
 
-@section('title', 'Create Event')
+@section('title', 'Edit Event')
 
 @section('content')
     <div class="max-w-xl mx-auto px-4 py-6">
+
         <h1 class="text-2xl font-bold text-gray-800 mb-6">
-            Create Event
+            Edit Event
         </h1>
         <x-alert/>
 
-        <form method="POST" 
-            action="{{ route('event.store') }}"
+        <form method="POST"
+            action="{{ route('events.update', $event) }}"
             class="bg-white shadow-md rounded-xl p-6 space-y-5">
             @csrf
+            @method('PUT')
 
             <div class="mb-4">
     <label for="title" class="block mb-1 font-semibold text-gray-700">
@@ -111,12 +113,21 @@
         <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
     @enderror
 </div>
+            
 
-            <button type="submit" 
-                class="mr-4 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                Save
-            </button>
-            <a href="{{ route('event.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 rounded-lg">Retour à la liste</a>
+            {{-- Actions --}}
+            <div class="flex justify-between items-center pt-4">
+                <a href="{{ route('events.index') }}"
+                type="button"
+                class="px-5 py-2  bg-gray-500 text-white rounded-lg hover:bg-gray-700 transition">
+                    Retour à la liste
+                </a>
+
+                <button type="submit"
+                        class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                    Update
+                </button>
+            </div>
         </form>
     </div>
 @endsection

@@ -23,13 +23,13 @@ use App\Models\Event;
         public function index()
         {
             $eventParticipants = $this->eventParticipantService->getAllEventParticipants();
-            return view('web.eventparticipant.index', compact('eventParticipants'));
+            return view('web.pages.eventparticipants.index', compact('eventParticipants'));
         }
 
         // Page pour créer un nouveau eventParticipant
         public function create()
         {
-            return view('web.eventparticipant.create');
+            return view('web.pages.eventparticipants.create');
         }
 
         // Sauvegarde d'un nouveau eventParticipant
@@ -41,7 +41,7 @@ use App\Models\Event;
                 $data['status'] = 'registered';
                 $this->eventParticipantService->create($data);
                 return redirect()
-                    ->route('event.index')
+                    ->route('events.index')
                     ->with('success', 'EventParticipant ajouté avec succès');
             } catch (EventParticipantException $e) {
                 return redirect()
@@ -54,14 +54,14 @@ use App\Models\Event;
         // Page pour afficher un eventParticipant
         public function show(EventParticipant $eventParticipant)
         {
-            return view('web.eventparticipant.show', compact('eventParticipant'));
+            return view('web.pages.eventparticipants.show', compact('eventParticipant'));
         }
 
 
         // Page pour éditer un eventParticipant existant
         public function edit(EventParticipant $eventParticipant)
         {
-            return view('web.eventparticipant.edit', compact('eventParticipant'));
+            return view('web.pages.eventparticipants.edit', compact('eventParticipant'));
         }
 
         // Mise à jour d'un eventParticipant existant
@@ -72,12 +72,12 @@ use App\Models\Event;
                 $eventParticipant = $this->eventParticipantService->update($eventParticipant, $data);
                 if (! $eventParticipant->wasChanged()) {
                     return redirect()
-                        ->route('event.index')
+                        ->route('events.index')
                         ->with('info', 'Aucune modification détectée');
                 }
 
                 return redirect()
-                    ->route('event.index')
+                    ->route('events.index')
                     ->with('success', 'EventParticipant mis à jour avec succès');
             } catch (EventParticipantException $e) {
                 return redirect()
@@ -93,7 +93,7 @@ use App\Models\Event;
             try{
                 $this->eventParticipantService->delete($eventParticipant);
                 return redirect()
-                    ->route('event.index')
+                    ->route('events.index')
                     ->with('success', 'EventParticipant supprimé avec succès');;
             }catch (EventParticipantException $e) {
                 return redirect()

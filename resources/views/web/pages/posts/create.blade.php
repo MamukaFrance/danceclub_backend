@@ -6,17 +6,14 @@
 <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-md my-16">
     <x-alert/>
      <h2 class="text-2xl font-bold mb-6 text-center">
-        {{ isset($post) ? 'Modifier un post' : 'Créer un post' }}
+        Créer un post
     </h2>
     {{-- Formulaire --}}
-    <form action="{{ isset($post) ? route('post.update', $post) : route('post.store') }}" 
+    <form action="{{ route('posts.store') }}" 
         method="POST" 
         enctype="multipart/form-data"
     >
         @csrf
-        @isset($post)
-            @method('PUT')
-        @endisset
 
         {{-- Titre --}}
         <div class="mb-4">
@@ -26,7 +23,7 @@
                 type="text" 
                 name="title" 
                 placeholder="Titre"
-                value="{{ old('title', $post->title ?? '') }}"
+                value="{{ old('title') }}"
                 required
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900"
             >   
@@ -41,7 +38,7 @@
                 placeholder="Contenu"
                 required
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900"
-            >{{ old('content', $post->content ?? '') }}</textarea>  
+            >{{ old('content') }}</textarea>  
         </div>
 
         {{-- Image --}}
@@ -63,25 +60,20 @@
             </div>
         </div>
 
-        {{-- Image actuelle si en édition --}}
-        @if(isset($post) && $post->image)
-            <div id="image-actuelle" class="mb-4">
-                <p class="mb-2 font-semibold text-gray-700">Image actuelle :</p>
-                <img 
-                    src="{{ asset('storage/' . $post->image) }}" 
-                    alt="Image du post" 
-                    class="max-w-full max-h-64 h-auto rounded-md"
-                >
-            </div>
-        @endif
-
-        {{-- Bouton --}}
-        <button
-            type="submit"
-            class="bg-blue-700 text-white px-6 py-3 rounded-md hover:bg-blue-900 transition font-semibold"
-        >
-            {{ isset($post) ? 'Mettre à jour' : 'Publier' }}          
-        </button>
+        {{-- Boutons --}}
+        <div class="mt-6 flex justify-between">
+            <button
+                type="submit"
+                class="px-5 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-900 transition"
+            >
+                Publier         
+            </button>
+            <a href="{{ route('posts.index') }}"
+                type="button"
+                class="px-5 py-2.5  bg-gray-500 text-white rounded-lg hover:bg-gray-700 transition">
+                    Retour à la liste
+            </a>
+        </div>
     </form>
 </div>
 

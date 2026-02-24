@@ -10,7 +10,7 @@
         <x-alert/>
 
         <form method="POST" 
-            action="{{ route('eventparticipant.store') }}"
+            action="{{ route('eventparticipants.store') }}"
             class="bg-white shadow-md rounded-xl p-6 space-y-5">
             @csrf
 
@@ -58,7 +58,7 @@
                 class="mr-4 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                 Save
             </button>
-            <a href="{{ route('eventparticipant.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 rounded-lg">Retour à la liste</a>
+            <a href="{{ route('eventparticipants.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 rounded-lg">Retour à la liste</a>
         </form>
     </div>
 @endsection

@@ -6,19 +6,17 @@
 <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-md my-16">
     <x-alert/>
     <h2 class="text-2xl font-bold mb-6 text-center">
-        {{ isset($course) ? 'Modifier un cours' : 'Créer un cours' }}
+        Modifier un cours
     </h2>
 
     {{-- Formulaire --}}
-    <form action="{{ isset($course) ? route('course.update', $course) : route('course.store') }}" 
+    <form action="{{ route('courses.update', $course) }}" 
         method="POST" 
         enctype="multipart/form-data"
     >
         @csrf
-        @isset($course)
-            @method('PUT')
-        @endisset
-
+        @method('PUT')
+    
         {{-- Titre --}}
         <div class="mb-4">
             <label for="title" class="block mb-2 font-semibold text-gray-700">Titre</label>
@@ -27,7 +25,7 @@
                 type="text" 
                 name="title" 
                 placeholder="Titre"
-                value="{{ old('title', $course->title ?? '') }}"
+                value="{{ old('title', $course->title) }}"
                 required
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900"
             >   
@@ -39,7 +37,7 @@
                 type="text"
                 name="style" 
                 placeholder="Style"
-                value="{{ old('style', $course->style ?? '') }}" 
+                value="{{ old('style', $course->style) }}" 
                 required
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900" >
         </div>
@@ -56,17 +54,17 @@
                     >
 
                 <option value="beginner"
-                    {{ old('level', $course->level ?? '') === 'beginner' ? 'selected' : '' }}>
+                    {{ old('level'), $course->level == 'beginner' ? 'selected' : '' }}>
                     Débutant
                 </option>
 
                 <option value="intermediate"
-                    {{ old('level', $course->level ?? '') === 'intermediate' ? 'selected' : '' }}>
+                    {{ old('level'), $course->level == 'intermediate' ? 'selected' : '' }}>
                     Intermédiaire
                 </option>
 
                 <option value="advanced"
-                    {{ old('level', $course->level ?? '') === 'advanced' ? 'selected' : '' }}>
+                    {{ old('level'), $course->level == 'advanced' ? 'selected' : '' }}>
                     Avancé
                 </option>
             </select>
@@ -79,7 +77,7 @@
                 type="text"
                 name="capacity" 
                 placeholder="Capacité"
-                value="{{ old('capacity', $course->capacity ?? '') }}" 
+                value="{{ old('capacity', $course->capacity ) }}" 
                 required
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900" >
         </div>
@@ -96,14 +94,14 @@
                 placeholder="Contenu"
                 required
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900"
-            >{{ old('content', $course->description ?? '') }}</textarea>  
+            >{{ old('description', $course->description ) }}</textarea>  
         </div>
 
         {{-- Bouton --}}
         <button
             type="submit"
             class="bg-blue-700 text-white px-6 py-3 rounded-md hover:bg-blue-900 transition font-semibold">
-            {{ isset($course) ? 'Mettre à jour' : 'Publier' }}          
+            Mettre à jour        
         </button>
     </form>
 </div>

@@ -26,13 +26,13 @@
             <div class="flex gap-2 mt-4">
                
                 @can('update', $eventParticipant)
-                    <a href="{{ route('eventparticipant.edit', $eventParticipant) }}"
+                    <a href="{{ route('eventparticipants.edit', $eventParticipant) }}"
                         class="px-3 py-1.5 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
                         Éditer
                     </a>
                 @endcan
 
-                <form action="{{ route('eventparticipant.destroy', $eventParticipant) }}"
+                <form action="{{ route('eventparticipants.destroy', $eventParticipant) }}"
                     method="POST"
                     onsubmit="return confirm('Supprimer cet eventParticipant ?')">
                     @csrf
@@ -44,7 +44,7 @@
                         </button>
                     @endcan
                 </form>
-                <a href="{{ route('eventparticipant.index') }}" 
+                <a href="{{ route('eventparticipants.index') }}" 
                     class="px-3 py-1.5 text-sm bg-gray-500  text-white rounded hover:bg-gray-600 transition">
                     Retour à la liste
                 </a>

@@ -21,19 +21,19 @@ class PostController extends Controller
     public function index()
     {
         $posts = $this->postService->getAllPosts();
-        return view('pages.posts', compact('posts'));
+        return view('web.pages.posts.index', compact('posts'));
     }
 
     // Page pour créer un nouveau post
     public function create()
     {
-        return view('pages.create-post');
+        return view('web.pages.posts.create');
     }
 
     // Page pour éditer un post existant
     public function edit(Post $post)
     {
-        return view('pages.create-post', compact('post'));
+        return view('web.pages.posts.edit', compact('post'));
     }
 
     // Sauvegarde d'un nouveau post
@@ -42,7 +42,7 @@ class PostController extends Controller
         try {
             $this->postService->create($request);
             return redirect()
-                ->route('post.index')
+                ->route('posts.index')
                 ->with('success', 'Post créé avec succès');
 
         } catch (PostException $e) {
@@ -54,6 +54,12 @@ class PostController extends Controller
         
     }
 
+    // Page pour afficher un Post
+        public function show(Post $post)
+        {
+            return view('web.pages.posts.show', compact('post'));
+        }
+
     // Mise à jour d'un post existant
     public function update(PostRequest $request, Post $post)
     {
@@ -61,12 +67,12 @@ class PostController extends Controller
             $post = $this->postService->update($request, $post);
             if (! $post->wasChanged()) {
                 return redirect()
-                    ->route('post.index')
+                    ->route('posts.index')
                     ->with('info', 'Aucune modification détectée');
             }
 
             return redirect()
-                ->route('post.index')
+                ->route('posts.index')
                 ->with('success', 'Post mis à jour avec succès');    
         } catch (PostException $e) {
             return redirect()
@@ -82,7 +88,7 @@ class PostController extends Controller
         try{
             $this->postService->delete($post);
             return redirect()
-                ->route('post.index')
+                ->route('posts.index')
                 ->with('success', 'Post supprimé avec succès');
         }catch (PostException $e) {
             return redirect()

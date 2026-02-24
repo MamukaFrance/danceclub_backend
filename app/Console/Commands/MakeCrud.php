@@ -303,7 +303,7 @@ class MakeCrud extends Command
         if ($this->option('api')) return;
 
         $varName = lcfirst($name);
-        $basePath = resource_path("views/{$this->viewModule()}/".strtolower($name));
+        $basePath = resource_path("views/{$this->viewModule()}/pages/".Str::plural(strtolower($name)));
         File::ensureDirectoryExists($basePath);
 
         foreach (['index','create','edit','show'] as $view) {

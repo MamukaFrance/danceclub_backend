@@ -24,7 +24,12 @@ class Course extends Model
         'remaining_seats',
     ];
 
+    // Casts pour formater les dates
+    protected $casts = [
+        'date' => 'date',
+    ];
 
-public function teacher() { return $this->belongsTo(Teacher::class); }
-public function reservations() { return $this->hasMany(Reservation::class); }
+
+    public function teacher() { return $this->belongsTo(Teacher::class); }
+    public function reservations() { return $this->hasMany(Reservation::class); }
 }

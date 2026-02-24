@@ -11,7 +11,7 @@
         <x-alert/>
 
         <form method="POST"
-            action="{{ route('eventparticipant.update', $eventParticipant) }}"
+            action="{{ route('eventparticipants.update', $eventParticipant) }}"
             class="bg-white shadow-md rounded-xl p-6 space-y-5">
             @csrf
             @method('PUT')
@@ -59,7 +59,7 @@
 
             {{-- Actions --}}
             <div class="flex justify-between items-center pt-4">
-                <a href="{{ route('eventparticipant.index') }}"
+                <a href="{{ route('eventparticipants.index') }}"
                 type="button"
                 class="px-5 py-2  bg-gray-500 text-white rounded-lg hover:bg-gray-700 transition">
                     Retour à la liste
