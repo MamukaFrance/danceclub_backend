@@ -50,28 +50,11 @@
                     {{ $course->remaining_seats }} places restantes sur {{ $course->capacity }}.
                 </p>
 
-                <div class="flex justify-between flex-wrap gap-2 mt-4 items-center">
-                    <!-- Bouton de modification -->
-                    @can('update', $course)
-                        <a href="{{ route('courses.edit', $course) }}" class="mt-4 max-w-sm rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 transition">
-                            Modifier
-                        </a>
-                    @endcan
-
-                    <!-- Bouton de suppression -->
-                    @can('delete', $course)
-                    <form action="{{ route('courses.destroy', $course) }}" method="POST" class="inline">
-                        @csrf
-                        @method('DELETE')
-                        <button
-                            type="submit"
-                            class="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                            onclick="return confirm('Voulez-vous vraiment supprimer ce post ?')"
-                        >
-                            Supprimer
-                        </button>
-                    </form>
-                    @endcan
+                <div class="flex justify-end mt-4">
+                    <a href="{{ route('courses.show', $course) }}"
+                        class="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                        Détails
+                    </a>
                 </div>
             </div>
         @endforeach

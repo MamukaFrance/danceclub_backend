@@ -23,42 +23,24 @@
                 <x-card 
                     image="{{ $post->image ? asset('storage/' . $post->image) : null }}" 
                     title="{{ $post->title }}"
-                >
+                    >
                     {{ $post->content }}
 
                     <p class="text-gray-500 text-sm my-3">
                         Publié le : {{ $post->created_at->format('d/m/Y H:i') }}
                     </p>
                     @if($post->updated_at != $post->created_at)
-                        <p class="text-gray-500 text-sm">
+                        <p class="text-gray-500 text-sm my-3">
                             Modifié le : {{ $post->updated_at->format('d/m/Y H:i') }}
                         </p>
                     @endif
-                    <a href="{{ route('posts.show', $post) }}"
-                        class="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-                        Voir
-                    </a>
-                    <div class="flex flex-wrap justify-between">
-                        @can('update', $post)
-                            <a type="button" href="{{ route('posts.edit', $post->id) }}" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded">
-                                Modifier
-                            </a>
-                        @endcan
-                        @can('delete', $post)
-                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="inline">
-                                @csrf
-                                @method('DELETE')
-
-                                <button
-                                    type="submit"
-                                    class="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                                    onclick="return confirm('Voulez-vous vraiment supprimer ce post ?')"
-                                >
-                                    Supprimer
-                                </button>
-                            </form>
-                        @endcan
+                    <div class="flex justify-end mt-4">
+                        <a href="{{ route('posts.show', $post) }}"
+                            class="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                            Détails
+                        </a>
                     </div>
+                    
                 </x-card>
             @endforeach
         </div>

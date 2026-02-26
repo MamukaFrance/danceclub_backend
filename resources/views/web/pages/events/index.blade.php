@@ -7,7 +7,7 @@
 
 <div class="max-w-5xl mx-auto px-4 py-6">
 
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-center items-center gap-6 mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Liste des Events</h1>
         <a href="{{ route('events.create') }}"
             class="px-3 py-1.5 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition">
@@ -77,31 +77,11 @@
                 🟢 <span class="font-medium">Places restantes :</span> {{ $event->remaining_seats }}
             </p>
 
-            <div class="flex gap-2">
+            <div class="flex justify-end gap-2">
                 <a href="{{ route('events.show', $event) }}"
                     class="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition">
                     Voir
                 </a>
-
-                @can('update', $event)
-                    <a href="{{ route('events.edit', $event) }}"
-                    class="px-3 py-1.5 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
-                        Éditer
-                    </a>
-                @endcan
-
-                <form action="{{ route('events.destroy', $event) }}"
-                    method="POST"
-                    onsubmit="return confirm('Supprimer cet event ?')">
-                    @csrf
-                    @method('DELETE')
-                    @can('delete', $event)
-                        <button type="submit"
-                            class="px-3 py-1.5 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition">
-                            Supprimer
-                        </button>
-                    @endcan
-                </form>
             </div>
 
         </div>

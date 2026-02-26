@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="max-w-md mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-4">Informations du post</h1>
+    <h1 class="text-2xl font-bold mb-4 text-center">Informations du post</h1>
     <x-card 
         image="{{ $post->image ? asset('storage/' . $post->image) : null }}" 
         title="{{ $post->title }}"
@@ -21,7 +21,7 @@
     </x-card>
 
     {{-- Actions CRUD --}}
-    <div class="mt-6 flex space-x-2">
+    <div class="mt-6 flex justify-between items-center flex-wrap gap-2">
         @can('update', $post)
             <a href="{{ route('posts.edit', $post->id) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
                 Modifier
