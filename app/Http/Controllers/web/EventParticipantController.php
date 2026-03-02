@@ -69,12 +69,14 @@ use App\Models\Event;
         {
             try {
                 $data = $request->validated();
-                $eventParticipant = $this->eventParticipantService->update($eventParticipant, $data);
-                if (! $eventParticipant->wasChanged()) {
+                $eventParticipant->fill($data);
+                if (! $eventParticipant->isDirty()) {
                     return redirect()
                         ->route('events.index')
                         ->with('info', 'Aucune modification détectée');
                 }
+                $eventParticipant = $this->eventParticipantService->update($eventParticipant, $data);
+
 
                 return redirect()
                     ->route('events.index')

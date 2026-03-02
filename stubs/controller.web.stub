@@ -65,13 +65,13 @@ use App\Exceptions\{{ name }}Exception;
         {
             try {
                 $data = $request->validated();
-                ${{ varName }} = $this->{{ varName }}Service->update(${{ varName }}, $data);
-                if (! ${{ varName }}->wasChanged()) {
+                ${{ varName }}->fill($data);
+                if (! ${{ varName }}->isDirty()) {
                     return redirect()
                         ->route('{{ route }}s.index')
                         ->with('info', 'Aucune modification détectée');
                 }
-
+                ${{ varName }} = $this->{{ varName }}Service->update(${{ varName }}, $data);
                 return redirect()
                     ->route('{{ route }}s.index')
                     ->with('success', '{{ name }} mis à jour avec succès');

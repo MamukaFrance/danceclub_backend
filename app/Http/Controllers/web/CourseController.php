@@ -67,7 +67,8 @@ class CourseController extends Controller
     {
         try {        
             $data = $request->validated();
-            if(! $course->wasChanged()) {
+            $course->fill($data);
+            if (! $course->isDirty()) {
                 return redirect()
                     ->route('courses.index')
                     ->with('info', 'Aucun changement détecté');

@@ -66,12 +66,13 @@ use App\Exceptions\EventException;
         {
             try {
                 $data = $request->validated();
-                $event = $this->eventService->update($event, $data);
-                if (! $event->wasChanged()) {
+                $event->fill($data);
+                if (! $event->isDirty()) {
                     return redirect()
                         ->route('events.index')
                         ->with('info', 'Aucune modification détectée');
                 }
+                $event = $this->eventService->update($event, $data);
 
                 return redirect()
                     ->route('events.index')

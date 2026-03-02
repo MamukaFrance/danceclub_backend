@@ -8,38 +8,33 @@
             <span class="line block h-0.5 w-full bg-white transition-all duration-300"></span>
             <span class="line block h-0.5 w-full bg-white transition-all duration-300"></span>
         </button>
-
          <!-- Overlay -->
         <div id="overlay"
             class="fixed inset-0 bg-black/50 hidden md:hidden transition-opacity duration-300">
         </div>
     </div>
-
     <!-- Menu slide -->
-    <div
-        id="menu"
+    <div id="menu"
         class="fixed top-0 right-0 h-screen w-64
            bg-blue-700 text-white
            transform translate-x-full
            transition-transform duration-300 ease-in-out
            md:static md:translate-x-0 md:h-auto md:w-auto md:gap-4 md:bg-transparent
            hidden md:flex flex-wrap
-           px-8 py-4 md:py-0 space-y-1 md:space-y-0"
-    >
-        <div class="flex justify-end">
-            <span id="close-menu" class="text-white  md:hidden cursor-pointer text-2xl">X</span>
+           px-8 py-4 md:py-0 space-y-1 md:space-y-0">
+        <div class="flex justify-end md:hidden">
+            <button id="close-menu" class="p-4 cursor-pointer text-2xl">
+                ✕
+            </button>
         </div>
-
         <x-nav-link href="{{ route('home') }}">Accueil</x-nav-link>
         <x-nav-link href="{{ route('about') }}">À propos</x-nav-link>
-
         @auth
             <x-nav-link href="{{ route('posts.index') }}">Posts</x-nav-link>
             <x-nav-link href="{{ route('courses.index') }}">Courses</x-nav-link>
             <x-nav-link href="{{ route('events.index') }}">Événements</x-nav-link>
             <x-nav-link href="{{ route('profile.edit') }}">Mon profil</x-nav-link>
         @endauth
-
         <x-nav-link href="{{ route('mail.index') }}">Contact</x-nav-link>
         @auth
             <form method="POST" action="{{ route('logout') }}">
@@ -52,7 +47,5 @@
         @guest
             <x-nav-link href="{{ route('login') }}">Se connecter</x-nav-link>
         @endguest
-
-       
     </div>
 </nav>

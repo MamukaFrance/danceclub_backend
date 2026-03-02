@@ -11,6 +11,7 @@
     {{-- Formulaire --}}
     <form action="{{ route('posts.update', $post) }}" 
         method="POST" 
+        enctype="multipart/form-data"
     >
         @csrf
         @method('PUT')
@@ -50,7 +51,6 @@
                 name="image"
                 accept="image/*"
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900"
-                onchange="previewImage(event)"
             >   
 
             {{-- Aperçu de l'image choisie --}}
@@ -88,32 +88,5 @@
         </div>
     </form>
 </div>
-
-{{-- Script JS pour aperçu de l'image --}}
-<script>
-    function previewImage(event) {
-        const input = event.target;
-        const preview = document.getElementById('image-preview');
-        const titlePreview = document.getElementById('title-preview');
-        const imgActuelle = document.getElementById('image-actuelle');
-        
-
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-                preview.classList.remove('hidden'); // montrer l'image
-                titlePreview.classList.remove('hidden'); 
-                imgActuelle.classList.add('hidden'); // cacher l'image actuelle si en édition 
-            }
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            preview.src = '';
-            preview.classList.add('hidden'); // cacher si plus d'image
-            titlePreview.classList.add('hidden');
-            imgActuelle.classList.remove('hidden'); // montrer l'image actuelle si en édition
-        }
-    }
-</script>
 @endsection
  

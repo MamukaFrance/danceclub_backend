@@ -2,7 +2,7 @@
 <div {{ $attributes->merge(['class' => 'bg-white p-4 max-w-md rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300']) }}>
     <!-- Image -->
     @if($image)
-        <img class="rounded-lg" src="{{ $image }}" alt="{{ $title }}" class="w-full h-48 object-cover">
+        <img src="{{ $image }}" alt="{{ $title }}" class="rounded-lg w-full h-48 object-cover loading="lazy"">
     @else
         <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
             <span class="text-gray-400">Pas d'image</span>

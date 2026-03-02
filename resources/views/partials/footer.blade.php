@@ -1,4 +1,4 @@
-<footer class="bg-gray-700 text-gray-300 py-6 mt-16 ">
+<footer class="bg-gray-700 text-gray-300 py-6">
     <section class="flex justify-around mb-4 container mx-auto">
         <div><a href=""></a>logo</div>
         <div>

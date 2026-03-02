@@ -22,15 +22,18 @@ class ProfileController extends Controller
     public function update(UserRequest $request)
     {
         try {
-            $user = $this->profilService->updateProfile(
-                auth()->user(),
-                $request->validated()
-            );
-            if (! $user->wasChanged()) {
+            $data = $request->validated();
+            $user = auth()->user();
+            $user->fill($data);
+            if (! $user->isDirty()) {
                 return redirect()
                     ->route('profile.edit')
                     ->with('info', 'Aucune modification détectée');
             }
+            $user = $this->profilService->updateProfile(
+                $user,
+                $data
+            );
 
             return redirect()
                 ->route('profile.edit')
