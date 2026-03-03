@@ -17,15 +17,17 @@ class TeacherFactory extends Factory
      */
     public function definition(): array
     {
+        // Instancie Faker manuellement pour être sûr qu'il marche en prod
+        $faker = FakerFactory::create();
         // Générer un ID aléatoire pour l'avatar pour que chaque teacher ait une tête différente
-        $avatarId = $this->faker->numberBetween(1, 70);
+        $avatarId = $faker->numberBetween(1, 70);
 
         return [
-            'style' => $this->faker->randomElement([
+            'style' => $faker->randomElement([
                 'Ballet', 'Hip Hop', 'Salsa', 
                 'Jazz', 'Tap', 'Ballroom'
                 ]),
-            'bio' => $this->faker->paragraph(),
+            'bio' => $faker->paragraph(),
             // URL d'avatar réaliste
             'photo' => "https://i.pravatar.cc/400?img={$avatarId}",
         ];
