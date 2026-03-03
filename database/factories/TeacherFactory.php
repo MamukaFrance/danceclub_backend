@@ -10,6 +10,7 @@ use App\Models\User;
  */
 class TeacherFactory extends Factory
 {
+    protected $model = Teacher::class;
     /**
      * Define the model's default state.
      *
