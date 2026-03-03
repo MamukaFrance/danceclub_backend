@@ -4,10 +4,10 @@
 
 @section('content')
 
-<div class="container mx-auto px-4">
+<div class="container mx-auto px-4 py-6">
 
     {{-- Affichage des cours existants --}}
-    <div class="flex justify-between items-center my-4">
+    <div class="flex justify-center items-center gap-6 mb-6">
         <h2 class="text-2xl font-bold text-center my-6">Cours disponibles</h2>
         <a href="{{ route('courses.create') }}"
                 type="button"
@@ -60,3 +60,4 @@
         @endforeach
     </div>
 </div>
+@endsection

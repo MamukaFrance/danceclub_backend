@@ -8,15 +8,13 @@ use Spatie\Permission\Models\Permission;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
-    public function run(): void
+   public function run(): void
     {
-        // 1️⃣ Supprimer les rôles et permissions existants pour éviter les doublons
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        Permission::truncate();
-        Role::truncate();
+        Role::query()->delete();
+        Permission::query()->delete();
 
-        // 2️⃣ Créer les permissions pour les posts
         $permissions = [
             'create posts',
             'edit posts',
@@ -25,17 +23,19 @@ class RolesAndPermissionsSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission]);
         }
 
-        // 3️⃣ Créer les rôles
-        $adminRole = Role::create(['name' => 'admin']);
-        $editorRole = Role::create(['name' => 'editor']);
-        $userRole = Role::create(['name' => 'user']);
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $editorRole = Role::firstOrCreate(['name' => 'editor']);
+        $userRole = Role::firstOrCreate(['name' => 'user']);
 
-        // 4️⃣ Assigner les permissions aux rôles
-        $adminRole->givePermissionTo(Permission::all()); // Admin peut tout
-        $editorRole->givePermissionTo(['create posts', 'edit posts', 'view posts']); // pas supprimer
-        $userRole->givePermissionTo(['view posts']); // lecture seule
+        $adminRole->syncPermissions(Permission::all());
+        $editorRole->syncPermissions([
+            'create posts',
+            'edit posts',
+            'view posts',
+        ]);
+        $userRole->syncPermissions(['view posts']);
     }
 }

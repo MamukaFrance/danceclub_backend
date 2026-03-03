@@ -5,8 +5,8 @@
 @section('content')
 
 {{-- Affichage des posts existants --}}
-<div class="container mx-auto px-4">
-    <div class="flex justify-between items-center my-4">
+<div class="container mx-auto px-4 py-6">
+    <div class="flex justify-center items-center gap-6 mb-6">
         <h2 class="text-2xl font-bold text-center">Tous les posts</h2>
         <a href="{{ route('posts.create') }}"
             type="button"
