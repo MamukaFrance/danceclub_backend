@@ -11,6 +11,8 @@ use Faker\Factory as FakerFactory;
  */
 class TeacherFactory extends Factory
 {
+    // Associer la factory au modèle
+    protected $model = Teacher::class;
     /**
      * Define the model's default state.
      *
