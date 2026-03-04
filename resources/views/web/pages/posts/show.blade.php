@@ -6,7 +6,7 @@
 <div class="max-w-md mx-auto px-4 py-6">
     <h1 class="text-2xl font-bold mb-4 text-center">Informations du post</h1>
     <x-card 
-        image="{{ $post->image ? asset('storage/' . $post->image) : null }}" 
+        image="{{ $post->image ?? null }}" 
         title="{{ $post->title }}"
         >
         <p>{{ $post->content }}</p>

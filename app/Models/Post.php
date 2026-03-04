@@ -15,6 +15,7 @@ class Post extends Model
         'content',
         'image',
         'user_id',
+        'image_public_id',
     ];
     public function user() { return $this->belongsTo(User::class); }
 }

@@ -65,7 +65,7 @@
             <div id="image-actuelle" class="mb-4">
                 <p class="mb-2 font-semibold text-gray-700">Image actuelle :</p>
                 <img 
-                    src="{{ asset('storage/' . $post->image) }}" 
+                    src="{{ $post->image }}" 
                     alt="Image du post" 
                     class="max-w-full max-h-64 h-auto rounded-md"
                 >

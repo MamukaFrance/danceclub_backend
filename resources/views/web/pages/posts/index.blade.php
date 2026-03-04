@@ -21,7 +21,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center items-start">
             @foreach($posts as $post)
                 <x-card 
-                    image="{{ $post->image ? asset('storage/' . $post->image) : null }}" 
+                    image="{{ $post->image ?? null }}" 
                     title="{{ $post->title }}"
                     >
                     {{ $post->content }}

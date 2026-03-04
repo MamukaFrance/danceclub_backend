@@ -60,6 +60,13 @@ return [
             'report' => false,
         ],
 
+        // autres disques ...
+
+        'cloudinary' => [
+            'driver' => 'cloudinary',
+            'url' => env('CLOUDINARY_URL'),
+        ],
+
     ],
 
     /*
