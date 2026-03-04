@@ -54,7 +54,7 @@ class PostService
 
             if (!empty($data['image_public_id'])) {
             Cloudinary::uploadApi()->destroy($data['image_public_id']);
-        }
+            }
 
             throw new PostException('Impossible de créer le post');
 
@@ -67,6 +67,12 @@ class PostService
             return DB::transaction(function () use ($request, $post) {
                 // Validation
                 $data = $request->validated();
+                if ($request->has('remove_image') && $post->image_public_id) {
+                Cloudinary::uploadApi()->destroy($post->image_public_id);
+                
+                $data['image'] = null;
+                $data['image_public_id'] = null;
+            }
                 // Traitement de l'image
                 if ($request->hasFile('image')) {
                     // if ($post->image) {
@@ -80,6 +86,7 @@ class PostService
 
                     $this->handleImage($request, $data);
                 }
+                
                 // Remplit sans sauvegarder
                 $post->fill($data);
                 // Aucune modification
@@ -103,6 +110,9 @@ class PostService
     public function delete(Post $post): bool
     {
         try {
+            // if ($post->image) {
+                //     Storage::disk('public')->delete($post->image);
+            // }
             if ($post->image_public_id) {
                 Cloudinary::uploadApi()->destroy($post->image_public_id);
             }

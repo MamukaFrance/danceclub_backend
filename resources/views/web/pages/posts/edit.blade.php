@@ -64,11 +64,23 @@
         @if(isset($post) && $post->image)
             <div id="image-actuelle" class="mb-4">
                 <p class="mb-2 font-semibold text-gray-700">Image actuelle :</p>
-                <img 
+                <img
                     src="{{ $post->image }}" 
                     alt="Image du post" 
                     class="max-w-full max-h-64 h-auto rounded-md"
                 >
+                <div class="mt-3 flex items-center gap-2">
+                    <input 
+                        type="checkbox" 
+                        name="remove_image" 
+                        id="remove_image"
+                        value="1"
+                        class="w-4 h-4"
+                    >
+                    <label for="remove_image" class="text-red-600 font-semibold">
+                        Supprimer l'image
+                    </label>
+                </div>
             </div>
         @endif
 
