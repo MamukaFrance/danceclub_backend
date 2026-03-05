@@ -9,6 +9,9 @@ use App\Http\Requests\CourseRequest;
 use App\Models\Course;
 
 use App\Exceptions\CourseException;
+use App\DTOs\CourseReservationDTO;
+use App\Actions\Course\ReserveCourseAction;
+use App\Actions\Course\CancelReservationAction;
 
 
 class CourseController extends Controller
@@ -102,22 +105,24 @@ class CourseController extends Controller
         
     }
 
-    public function reserve(Request $request, Course $course)
+    public function reserve(Request $request, Course $course, ReserveCourseAction $action)
     {
         $this->authorize('reserve', $course);
         try {
-            $this->courseService->reserve($request->user()->id, $course);
+            $dto = CourseReservationDTO::fromRequest($request, $course);
+            $action->execute($dto);
             return back()->with('success', 'Réservation réussie');
         }catch (CourseException $e) {
             return back()->with('error', $e->getMessage());
         }
     }
 
-    public function cancel(Request $request, Course $course)
+    public function cancel(Request $request, Course $course, CancelReservationAction $action)
     {
         $this->authorize('cancel', $course);
         try {
-            $this->courseService->cancel($course, $request->user()->id);
+            $dto = CourseReservationDTO::fromRequest($request, $course);
+            $action->execute($dto);
             return back()->with('success', 'Réservation annulée');
         }catch (CourseException $e) {
             return back()->with('error', $e->getMessage());

@@ -3,6 +3,7 @@
 namespace App\Repositories\Contracts;
 
 use App\Models\Course;
+use App\DTOs\CourseReservationDTO;
 
 interface CourseRepositoryInterface
 {
@@ -18,11 +19,7 @@ interface CourseRepositoryInterface
 
     public function getAllTeachers();
 
-    public function reserve(Course $course, int $userId);
+    public function reserve(CourseReservationDTO $dto);
 
-    public function cancel(Course $course, int $userId);
-
-    // public function reserve(CourseReservationDTO $dto): void;
-
-    // public function cancel(CourseReservationDTO $dto): void;
+    public function cancel(CourseReservationDTO $dto);
 }

@@ -5,7 +5,9 @@ namespace App\Repositories;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\Teacher;
+use App\Models\Reservation;
 use App\Repositories\Contracts\CourseRepositoryInterface;
+use App\DTOs\CourseReservationDTO;
 
 class EloquentCourseRepository implements CourseRepositoryInterface
 {
@@ -47,28 +49,34 @@ class EloquentCourseRepository implements CourseRepositoryInterface
         return Teacher::with('user')->get();
     }
 
-    public function reserve(Course $course, int $userId)
+    public function reserve(CourseReservationDTO $dto)
     {
-        $created = $course->reservations()->create([
-            'user_id' => $userId,
-            'course_id' => $course->id,
-            'reservation_date' => now() 
+        $course = Course::findOrFail($dto->courseId);
+
+        $reservation = Reservation::create([
+            'user_id' => $dto->userId,
+            'course_id' => $dto->courseId,
+            'status' => $dto->status,
+            'reservation_date' => $dto->reservationDate ?? now() 
         ]);
-        if ($created) {
+        if ($reservation) {
             $course->decrement('remaining_seats');
         }
-        return $course;
+        return $reservation;
     }
 
-    public function cancel(Course $course, int $userId)
+    public function cancel(CourseReservationDTO $dto)
     {
-         $deleted = $course->reservations()
-            ->where('user_id', $userId)
-            ->first()
-            ->delete();
-        if ($deleted) {
+        $course = Course::findOrFail($dto->courseId);
+            
+         $reservation = Reservation::where('user_id', $dto->userId)
+            ->where('course_id', $dto->courseId)
+            ->first();
+            
+        if ($reservation) {
+            $reservation->delete();
             $course->increment('remaining_seats');
         }
-        return $course;
+        return $reservation;
     }
 }

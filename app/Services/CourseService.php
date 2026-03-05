@@ -7,6 +7,11 @@ use App\Models\Course;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\CourseException;
 use Illuminate\Database\QueryException;
+use App\DTOs\CourseReservationDTO;
+use App\Events\CourseReserved;
+use App\Events\CourseCancelled;
+use Illuminate\Support\Facades\Event;
+
 
 class CourseService
 {
@@ -47,47 +52,61 @@ class CourseService
         return $this->courseRepository->getAllTeachers();
     } 
     
-    public function reserve(int $userId, Course $course)
+    public function reserve(CourseReservationDTO $dto)
     {
-        try {
-            return DB::transaction(function () use ($userId,$course) {
+            return DB::transaction(function () use ($dto) {
 
                 // Verrouille la ligne du cours
                 $course = Course::lockForUpdate()
-                ->findOrFail($course->id);
+                ->findOrFail($dto->courseId);
+
+                if (!$course) {
+                throw new CourseException("Cours introuvable.");
+            }
 
                 // Vérifier les places restantes
                 if ($course->remaining_seats <= 0) {
                     throw new CourseException('Aucune place restante pour ce cours.');
                 }
 
-                return $this->courseRepository->reserve($course, $userId);
+                $reservation = $this->courseRepository->reserve($dto);
+
+                // Event
+                event(new CourseReserved($reservation));
+
+                return $reservation;
 
             });
-        }catch (QueryException $e) {
-            // Contrainte unique violée
-            throw new CourseException('Vous avez déjà réservé ce cours.');        }
     }
 
-    public function cancel(Course $course, int $userId)
+    public function cancel(CourseReservationDTO $dto)
     {
-        return DB::transaction(function () use ($course, $userId) {
+        return DB::transaction(function () use ($dto) {
 
             // Verrouille la ligne du cours
-            $course = Course::where('id', $course->id)
+            $course = Course::where('id', $dto->courseId)
                 ->lockForUpdate()
                 ->first();
 
+            if (!$course) {
+                throw new CourseException("Cours introuvable.");
+            }
+
             // Vérifier si l'utilisateur a une réservation
             $hasReservation = $course->reservations()
-                ->where('user_id', $userId)
+                ->where('user_id', $dto->userId)
                 ->exists();
 
             if (! $hasReservation) {
                 throw new CourseException('Vous n\'avez pas de réservation pour ce cours.');
             }
 
-            return $this->courseRepository->cancel($course, $userId);
+            $reservation = $this->courseRepository->cancel($dto);
+
+            // Event
+            event(new CourseCancelled($reservation));
+
+            return $reservation;
         });
     }
 
