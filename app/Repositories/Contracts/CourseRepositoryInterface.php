@@ -17,4 +17,12 @@ interface CourseRepositoryInterface
     public function delete(Course $course): bool;
 
     public function getAllTeachers();
+
+    public function reserve(Course $course, int $userId);
+
+    public function cancel(Course $course, int $userId);
+
+    // public function reserve(CourseReservationDTO $dto): void;
+
+    // public function cancel(CourseReservationDTO $dto): void;
 }

@@ -17,6 +17,7 @@
     </div>
 
     <x-alert/>
+    
     @if($courses->isEmpty())
         <p class="text-center text-gray-500">Aucun cours pour le moment.</p>
     @else
@@ -30,12 +31,7 @@
                     </h3>
 
                     <!-- Bouton de réservation -->
-                        <form class="flex justify-end my-4" action="{{route('courses.reserve', $course)}}" method="POST">
-                            @csrf
-                            <button type="submit" class="mt-4 max-w-sm rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 transition">
-                                Réserver
-                            </button>
-                        </form>
+                    <x-course-reserve-button :course="$course" />
 
                     <!-- Description -->
                     <p class="text-gray-600 leading-relaxed">

@@ -13,7 +13,7 @@ class CoursePolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class CoursePolicy
      */
     public function view(User $user, Course $course): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -49,6 +49,20 @@ class CoursePolicy
     {
         return $user->hasRole('admin') 
         ||$user->id === $course->teacher->user_id;
+    }
+
+     // Réserver (ne peut pas réserver son propre cours)
+    public function reserve(User $user, Course $course): bool
+    {
+        return $course->teacher->user_id !== $user->id;
+    }
+
+    // Annuler (doit avoir une réservation)
+    public function cancel(User $user, Course $course): bool
+    {
+        return $course->reservations()
+            ->where('user_id', $user->id)
+            ->exists();
     }
 
     /**

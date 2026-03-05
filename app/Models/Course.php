@@ -29,6 +29,11 @@ class Course extends Model
         'date' => 'date',
     ];
 
+    public function isFull()
+    {
+        return $this->remaining_seats <= 0;
+    }
+
 
     public function teacher() { return $this->belongsTo(Teacher::class); }
     public function reservations() { return $this->hasMany(Reservation::class); }

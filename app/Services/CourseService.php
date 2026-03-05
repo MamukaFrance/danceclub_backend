@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Repositories\Contracts\CourseRepositoryInterface;
 use App\Models\Course;
+use Illuminate\Support\Facades\DB;
+use App\Exceptions\CourseException;
+use Illuminate\Database\QueryException;
 
 class CourseService
 {
@@ -42,5 +45,50 @@ class CourseService
 
     public function getAllTeachers(){
         return $this->courseRepository->getAllTeachers();
-    }       
+    } 
+    
+    public function reserve(int $userId, Course $course)
+    {
+        try {
+            return DB::transaction(function () use ($userId,$course) {
+
+                // Verrouille la ligne du cours
+                $course = Course::lockForUpdate()
+                ->findOrFail($course->id);
+
+                // Vérifier les places restantes
+                if ($course->remaining_seats <= 0) {
+                    throw new CourseException('Aucune place restante pour ce cours.');
+                }
+
+                return $this->courseRepository->reserve($course, $userId);
+
+            });
+        }catch (QueryException $e) {
+            // Contrainte unique violée
+            throw new CourseException('Vous avez déjà réservé ce cours.');        }
+    }
+
+    public function cancel(Course $course, int $userId)
+    {
+        return DB::transaction(function () use ($course, $userId) {
+
+            // Verrouille la ligne du cours
+            $course = Course::where('id', $course->id)
+                ->lockForUpdate()
+                ->first();
+
+            // Vérifier si l'utilisateur a une réservation
+            $hasReservation = $course->reservations()
+                ->where('user_id', $userId)
+                ->exists();
+
+            if (! $hasReservation) {
+                throw new CourseException('Vous n\'avez pas de réservation pour ce cours.');
+            }
+
+            return $this->courseRepository->cancel($course, $userId);
+        });
+    }
+
 }

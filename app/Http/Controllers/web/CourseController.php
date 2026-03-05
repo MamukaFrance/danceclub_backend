@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CourseRequest;
 use App\Models\Course;
 
-use Illuminate\Support\Facades\DB;
+use App\Exceptions\CourseException;
 
 
 class CourseController extends Controller
@@ -16,6 +16,7 @@ class CourseController extends Controller
     public function __construct(protected CourseService $courseService) {
          // Middleware pour sécuriser certaines routes par rôle
         $this->middleware('role:admin|editor')->only(['create', 'store', 'edit', 'update']);
+        $this->authorizeResource(Course::class, 'course');
     }
 
     public function index()
@@ -103,33 +104,23 @@ class CourseController extends Controller
 
     public function reserve(Request $request, Course $course)
     {
-        return DB::transaction(function () use ($course, $request) {
-
-            // Vérifier les places restantes
-            if ($course->remaining_seats <= 0) {
-                return back()->withErrors('Aucune place restante pour ce cours.');
-            }
-
-            // Empêcher double réservation
-            // $alreadyReserved = $course->reservations()
-            //     ->where('user_id', $request->user()->id)
-            //     ->exists();
-
-            // if ($alreadyReserved) {
-            //     return back()->withErrors('Vous avez déjà réservé ce cours.');
-            // }
-
-            // Créer la réservation
-            $course->reservations()->create([
-                'user_id' => $request->user()->id,
-                'reservation_date' => now(),
-            ]);
-
-            // Décrémenter les places
-            $course->decrement('remaining_seats');
-
+        $this->authorize('reserve', $course);
+        try {
+            $this->courseService->reserve($request->user()->id, $course);
             return back()->with('success', 'Réservation réussie');
-        });
-       
+        }catch (CourseException $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function cancel(Request $request, Course $course)
+    {
+        $this->authorize('cancel', $course);
+        try {
+            $this->courseService->cancel($course, $request->user()->id);
+            return back()->with('success', 'Réservation annulée');
+        }catch (CourseException $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 }

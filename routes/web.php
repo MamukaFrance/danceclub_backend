@@ -24,6 +24,7 @@ Route::view('/about', 'web.pages.about')->name('about');
 
 // Course routes
 Route::post('/courses/{course}/reserve', [CourseController::class, 'reserve'])->name('courses.reserve');
+Route::post('/courses/{course}/cancel', [CourseController::class, 'cancel'])->name('courses.cancel');
 
 // Contact form routes
 Route::view('/contact', 'web.pages.contact')->name('mail.index');
