@@ -1,7 +1,6 @@
-# nixpacks.toml - configuration Railway pour Laravel + Node 24 + PHP 8.4 + GD
-
+# nixpacks.toml - Laravel + PHP 8.4 + GD + Node 24.14
 [phases.setup]
-nixPkgs = ["php84", "php84Extensions.gd", "nodejs_24"]
+nixPkgs = ["php84", "php84Extensions.gd", "nodejs_24_14"]
 
 [phases.install]
 cmds = [
