@@ -1,6 +1,6 @@
-# nixpacks.toml - Laravel + PHP 8.4 + GD + Node 24.14
+# nixpacks.toml - Laravel + PHP 8.4 + GD + Node 24.x
 [phases.setup]
-nixPkgs = ["php84", "php84Extensions.gd", "nodejs_24_14"]
+nixPkgs = ["php84", "php84Extensions.gd", "nodejs_24_x"]
 
 [phases.install]
 cmds = [
