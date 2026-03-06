@@ -2,6 +2,11 @@
 [phases.setup]
 nixPkgs = ["php84", "php84Extensions.gd", "nodejs_22", "composer"]
 
+# Commande pour installer Composer globalement
+cmds = [
+  "curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer"
+]
+
 [phases.install]
 cmds = [
   # Installer les dépendances PHP et Node
