@@ -10,4 +10,10 @@
     <li><strong>Heure :</strong> {{ $course->start_time }} - {{ $course->end_time }}</li>
 </ul>
 
+<p>Voici le QR Code pour accéder au cours :</p>
+<img src="data:image/png;base64,{{ $qrCode }}" alt="QR Code">
+<p>Présentez ce QR code à l'entrée du cours.</p>
+
+<p>Code de réservation : {{ $reservation->id }}</p>
+
 <p>Merci pour votre réservation.</p>

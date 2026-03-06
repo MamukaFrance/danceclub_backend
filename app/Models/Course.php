@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 
 class Course extends Model
@@ -32,6 +33,13 @@ class Course extends Model
     public function isFull()
     {
         return $this->remaining_seats <= 0;
+    }
+
+    public function generateQrCode()
+    {
+        return QrCode::format('png')
+            ->size(200)
+            ->generate($this->id);
     }
 
 

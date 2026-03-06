@@ -27,11 +27,14 @@ class ReservationConfirmed extends Mailable
 
     public function build()
     {
+        $qrCode = base64_encode($this->reservation->course->generateQrCode());
+
         return $this->subject('Confirmation de votre réservation')
                     ->view('emails.reservation_confirmed')
                     ->with([
                         'reservation' => $this->reservation,
                         'course' => $this->reservation->course,
+                        'qrCode' => $qrCode,
                     ]);
     }
 
