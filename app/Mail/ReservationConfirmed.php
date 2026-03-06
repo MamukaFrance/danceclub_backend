@@ -37,6 +37,7 @@ class ReservationConfirmed extends Mailable
                         'qrCode' => $qrCode,
                     ]);
     }
+    
 
     // /**
     //  * Get the message envelope.
