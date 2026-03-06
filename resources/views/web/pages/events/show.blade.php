@@ -33,8 +33,8 @@
                 @foreach($event->eventParticipants as $participant)
                     <tr>
                         <td class="px-4 py-2 border">{{ $participant->id }}</td>
-                        <td class="px-4 py-2 border">{{ $participant->name ?? 'Non défini' }}</td>
-                        <td class="px-4 py-2 border">{{ $participant->email ?? 'Non défini' }}</td>
+                        <td class="px-4 py-2 border">{{ $participant->user->name ?? 'Non défini' }}</td>
+                        <td class="px-4 py-2 border">{{ $participant->user->email ?? 'Non défini' }}</td>
                         <td class="px-4 py-2 border">{{ $participant->created_at->format('d/m/Y H:i') }}</td>
                     </tr>
                 @endforeach

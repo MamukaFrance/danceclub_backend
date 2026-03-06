@@ -2,13 +2,14 @@
 
 namespace App\Listeners;
 
-use App\Events\CourseReserved;
+use App\Events\CourseCancelled;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ReservationConfirmed;
+use App\Mail\ReservationCancelled;
 
-class SendReservationEmail
+
+class SendCancelledEmail
 {
     /**
      * Create the event listener.
@@ -21,9 +22,9 @@ class SendReservationEmail
     /**
      * Handle the event.
      */
-    public function handle(CourseReserved $event): void
+    public function handle(CourseCancelled $event): void
     {
         Mail::to($event->reservation->user->email)
-            ->send(new ReservationConfirmed($event->reservation));
+            ->send(new ReservationCancelled($event->reservation));   
     }
 }
