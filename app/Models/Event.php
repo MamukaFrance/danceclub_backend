@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Event extends Model
 {
@@ -20,6 +22,13 @@ class Event extends Model
         'capacity',
         'user_id',
     ];
+
+    public function generateQrCode()
+    {
+        return QrCode::format('png')
+            ->size(200)
+            ->generate(url('/event_participants/register/checkin/'.$this->id));
+    }
 
 
     public function eventParticipants() { return $this->hasMany(EventParticipant::class); }

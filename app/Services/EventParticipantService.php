@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 use App\Models\Event;
 use App\Enums\EventParticipantStatus;
+use App\Events\EventReserved;
+use App\Events\EventCancelled;
+
 
 class EventParticipantService
 {
@@ -89,15 +92,19 @@ class EventParticipantService
                 }
                 $this->ensureEventIsNotFull($eventId);
                 if ($exists) {
-                    return $this->eventParticipantRepository->update($exists, [
+                    $eventReservation = $this->eventParticipantRepository->update($exists, [
                         'status' => EventParticipantStatus::REGISTERED
                     ]);
+                    event(new EventReserved($eventReservation));
+                    return $eventReservation;
                 }
-                return $this->eventParticipantRepository->create([
+                $eventReservation = $this->eventParticipantRepository->create([
                     'event_id' => $eventId,
                     'user_id'  => $userId,
                     'status'   => EventParticipantStatus::REGISTERED
                 ]);
+                event(new EventReserved($eventReservation));
+                return $eventReservation;
             });
         } catch (QueryException $e) {
             throw new EventParticipantException(
@@ -118,10 +125,12 @@ class EventParticipantService
                         400
                     );
                 }
-                return $this->eventParticipantRepository->update(
+                $eventCancelled = $this->eventParticipantRepository->update(
                     $eventParticipant,
                     ['status' => EventParticipantStatus::CANCELLED]
                 );
+                event(new EventCancelled($eventCancelled));
+                return $eventCancelled;
             });
         } catch (QueryException $e) {
             throw new EventParticipantException(

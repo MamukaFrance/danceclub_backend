@@ -39,7 +39,7 @@ class Course extends Model
     {
         return QrCode::format('png')
             ->size(200)
-            ->generate($this->id);
+            ->generate(url('/reservations/checkin/'.$this->id));
     }
 
 

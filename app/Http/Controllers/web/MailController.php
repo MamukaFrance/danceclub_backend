@@ -15,12 +15,14 @@ class MailController extends Controller
 {
     public function send(ContactRequest $request)
     {
+         dd($request->validated());
         try {
+            $data = $request->validated();
             Mail::to('test@example.com')->send(
                 new ContactMail(
-                    $request->name,
-                    $request->email,
-                    $request->message
+                    $data['name'],
+                    $data['email'],
+                    $data['message']
                 )
             );
         } catch (Exception $e) {

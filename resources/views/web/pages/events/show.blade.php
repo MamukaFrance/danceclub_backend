@@ -26,7 +26,7 @@
                     <th class="px-4 py-2 border">ID</th>
                     <th class="px-4 py-2 border">Nom</th>
                     <th class="px-4 py-2 border">Email</th>
-                    <th class="px-4 py-2 border">Date d'inscription</th>
+                    <th class="px-4 py-2 border">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,7 +35,7 @@
                         <td class="px-4 py-2 border">{{ $participant->id }}</td>
                         <td class="px-4 py-2 border">{{ $participant->user->name ?? 'Non défini' }}</td>
                         <td class="px-4 py-2 border">{{ $participant->user->email ?? 'Non défini' }}</td>
-                        <td class="px-4 py-2 border">{{ $participant->created_at->format('d/m/Y H:i') }}</td>
+                        <td class="px-4 py-2 border">{{ $participant->status }}</td>
                     </tr>
                 @endforeach
             </tbody>
