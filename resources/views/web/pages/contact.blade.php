@@ -30,7 +30,7 @@
                     name="name"
                     value="{{ old('name') }}"
                     placeholder="Votre nom"
-                    class="w-full px-4 py-2 text-base border border-gray-300 rounded-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-900"
+                    class="w-full px-4 py-2 text-base text-gray-700 border border-gray-300 rounded-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-900"
                 >
 
                 @error('name')
@@ -40,7 +40,7 @@
 
             <!-- Email -->
             <div class="mb-4">
-                <label for="email" class="block mb-2 font-semibold text-gray-700">
+                <label for="email" class="block mb-2 font-semibold text-gray-900">
                     Email
                 </label>
 
@@ -50,7 +50,7 @@
                     name="email"
                     value="{{ old('email') }}"
                     placeholder="votre@email.com"
-                    class="w-full px-4 py-2 text-base border border-gray-300 rounded-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-900"
+                    class="w-full px-4 py-2 text-base text-gray-700 border border-gray-300 rounded-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-900"
                 >
 
                 @error('email')
@@ -68,7 +68,7 @@
                     id="message"
                     name="message"
                     placeholder="Votre message ici..."
-                    class="w-full px-4 py-2 text-base border border-gray-300 rounded-md min-h-[120px] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-900"
+                    class="w-full px-4 py-2 text-base text-gray-700 border border-gray-300 rounded-md min-h-[120px] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-900"
                 >{{ old('message') }}</textarea>
 
                 @error('message')

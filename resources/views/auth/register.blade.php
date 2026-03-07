@@ -35,7 +35,7 @@
                     id="name"
                     value="{{ old('name') }}"
                     required
-                    class="px-4 py-2 mt-1 w-full rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                    class="px-4 py-2 mt-1 w-full text-gray-900 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
                 >
             </div>
 
@@ -50,7 +50,7 @@
                     id="email"
                     value="{{ old('email') }}"
                     required
-                    class="px-4 py-2 mt-1 w-full rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                    class="px-4 py-2 mt-1 w-full text-gray-900 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
                 >
             </div>
 
@@ -64,7 +64,7 @@
                     name="password"
                     id="password"
                     required
-                    class="px-4 py-2 mt-1 w-full rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                    class="px-4 py-2 mt-1 w-full text-gray-900 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
                 >
             </div>
 
@@ -78,7 +78,7 @@
                     name="password_confirmation"
                     id="password_confirmation"
                     required
-                    class="px-4 py-2 mt-1 w-full rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                    class="px-4 py-2 mt-1 w-full text-gray-900 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
                 >
             </div>
 
