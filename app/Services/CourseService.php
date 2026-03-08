@@ -72,7 +72,7 @@ class CourseService
                 $reservation = $this->courseRepository->reserve($dto);
 
                 // Event
-                event(new CourseReserved($reservation));
+                // event(new CourseReserved($reservation));
 
                 return $reservation;
 
@@ -104,7 +104,7 @@ class CourseService
             $reservation = $this->courseRepository->cancel($dto);
 
             // Event
-            event(new CourseCancelled($reservation));
+            // event(new CourseCancelled($reservation));
 
             return $reservation;
         });

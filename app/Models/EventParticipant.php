@@ -17,6 +17,8 @@ class EventParticipant extends Model
         'event_id',
         'user_id',
         'status',
+        'token',
+        'present',
     ];
 
     protected $casts = [

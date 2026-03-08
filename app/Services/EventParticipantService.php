@@ -12,6 +12,7 @@ use App\Models\Event;
 use App\Enums\EventParticipantStatus;
 use App\Events\EventReserved;
 use App\Events\EventCancelled;
+use Illuminate\Support\Str;
 
 
 class EventParticipantService
@@ -93,17 +94,18 @@ class EventParticipantService
                 $this->ensureEventIsNotFull($eventId);
                 if ($exists) {
                     $eventReservation = $this->eventParticipantRepository->update($exists, [
-                        'status' => EventParticipantStatus::REGISTERED
+                        'status' => EventParticipantStatus::REGISTERED,
+                        'token'  => Str::random(40),
                     ]);
-                    event(new EventReserved($eventReservation));
+                    // event(new EventReserved($eventReservation));
                     return $eventReservation;
                 }
                 $eventReservation = $this->eventParticipantRepository->create([
                     'event_id' => $eventId,
                     'user_id'  => $userId,
-                    'status'   => EventParticipantStatus::REGISTERED
+                    'status'   => EventParticipantStatus::REGISTERED,
                 ]);
-                event(new EventReserved($eventReservation));
+                // event(new EventReserved($eventReservation));
                 return $eventReservation;
             });
         } catch (QueryException $e) {
@@ -129,7 +131,7 @@ class EventParticipantService
                     $eventParticipant,
                     ['status' => EventParticipantStatus::CANCELLED]
                 );
-                event(new EventCancelled($eventCancelled));
+                // event(new EventCancelled($eventCancelled));
                 return $eventCancelled;
             });
         } catch (QueryException $e) {
