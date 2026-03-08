@@ -23,12 +23,12 @@ class Event extends Model
         'user_id',
     ];
 
-    public function generateQrCode()
-    {
-        return QrCode::format('png')
-            ->size(200)
-            ->generate(url('/event_participants/register/checkin/'.$this->id));
-    }
+    // public function generateQrCode()
+    // {
+    //     return QrCode::format('png')
+    //         ->size(200)
+    //         ->generate(url('/event_participants/register/checkin/'.$this->id));
+    // }
 
 
     public function eventParticipants() { return $this->hasMany(EventParticipant::class); }

@@ -68,7 +68,7 @@
                     id="message"
                     name="message"
                     placeholder="Votre message ici..."
-                    class="w-full px-4 py-2 text-base text-gray-700 border border-gray-300 rounded-md min-h-[120px] placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-900"
+                    class="w-full px-4 py-2 text-base text-gray-700 border border-gray-300 rounded-md min-h-30 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-900"
                 >{{ old('message') }}</textarea>
 
                 @error('message')

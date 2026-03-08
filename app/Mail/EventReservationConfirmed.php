@@ -40,7 +40,7 @@ class EventReservationConfirmed extends Mailable
      */
     public function content(): Content
     {
-        $qrCode = base64_encode($this->participant->event->generateQrCode());
+        $qrCode = base64_encode($this->participant->generateQrCode());
         return new Content(
             view: 'emails.event_reservation_confirmed',
             with: [

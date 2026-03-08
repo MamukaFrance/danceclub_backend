@@ -12,7 +12,7 @@
 <p>Voici votre QR Code pour accéder à l'événement :</p>
 <img src="data:image/png;base64,{{ $qrCode }}" alt="QR Code">
 <p>Présentez ce QR code à l'entrée de l'événement.</p>
-<p>Code de réservation : {{ $participant->id }}</p>
+<p>Code de réservation : {{ $participant->token }}</p>
 <p>Nous avons hâte de vous voir à l'événement !</p>
 <p>Si vous avez des questions ou besoin de plus d'informations, n'hésitez pas à nous contacter.</p>
 <p>Cordialement,</p>

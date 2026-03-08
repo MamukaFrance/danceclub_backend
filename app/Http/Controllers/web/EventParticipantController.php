@@ -122,5 +122,18 @@ use App\Models\Event;
 
             return back()->with('success', 'Participation annulée.');
         }
+
+        public function checkin($token)
+        {
+            $participant = EventParticipant::where('token', $token)->firstOrFail();
+
+            if ($participant->present) {
+                return back()->with('info', 'Ce participant a déjà été enregistré.');
+            }
+
+            $participant->present = true;
+            $participant->save();
+
+            return view('events.checkin_success', compact('participant'));        }
     }
 

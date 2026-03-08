@@ -27,7 +27,7 @@
 
         <!-- Overlay texte -->
         <div class="absolute inset-0 flex items-center justify-center bg-black/40">
-            <h2 class="text-white text-4xl font-bold">
+            <h2 class="text-white text-4xl font-bold text-center">
                 Bienvenue au Dance Club
             </h2>
         </div>
