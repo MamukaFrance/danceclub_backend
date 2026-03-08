@@ -60,3 +60,22 @@ Route::post('/participants/{participant}/cancel', [EventParticipantController::c
 
 Route::get('/event/checkin/{token}', [EventParticipantController::class, 'checkin'])
     ->name('event.checkin');
+
+
+use Illuminate\Support\Facades\Mail;
+
+Route::get('/smtp-test', function () {
+
+    try {
+        Mail::raw('SMTP test Railway', function ($message) {
+            $message->to('test@example.com')
+                    ->subject('SMTP TEST');
+        });
+
+        return "MAIL SENT";
+
+    } catch (\Exception $e) {
+        return $e->getMessage();
+    }
+
+});
