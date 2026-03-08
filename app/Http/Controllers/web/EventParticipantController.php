@@ -134,6 +134,6 @@ use App\Models\Event;
             $participant->present = true;
             $participant->save();
 
-            return view('events.checkin_success', compact('participant'));        }
+            return view('web/pages/events.checkin_success', compact('participant'));        }
     }
 
