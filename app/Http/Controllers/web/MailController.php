@@ -15,7 +15,6 @@ class MailController extends Controller
 {
     public function send(ContactRequest $request)
     {
-         dd($request->validated());
         try {
             $data = $request->validated();
             Mail::to('test@example.com')->send(
