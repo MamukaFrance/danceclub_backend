@@ -34,12 +34,18 @@ class EventParticipant extends Model
         });
     }
 
-    public function generateQrCode()
+    public function generateQrCodeBinary(): string
     {
-        return QrCode::format('png')
+        return (string) QrCode::format('png')
             ->size(200)
             ->generate(route('event.checkin', $this->token));
     }
+
+    public function generateQrCodeBase64(): string
+    {
+        return base64_encode($this->generateQrCodeBinary());
+    }
+    
 
     public function event() { return $this->belongsTo(Event::class); }
     public function user() { return $this->belongsTo(User::class); }

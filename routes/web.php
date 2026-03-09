@@ -61,4 +61,3 @@ Route::post('/participants/{participant}/cancel', [EventParticipantController::c
 Route::get('/event/checkin/{token}', [EventParticipantController::class, 'checkin'])
     ->name('event.checkin');
 
-    

@@ -17,7 +17,11 @@ class MailController extends Controller
     {
         try {
             $data = $request->validated();
-            Mail::to('test@example.com')->send(
+            $user = Auth()->user();
+            if (!$user) {
+                return back()->withErrors('Utilisateur non connecté.');
+            }
+            Mail::to($user->email)->send(
                 new ContactMail(
                     $data['name'],
                     $data['email'],

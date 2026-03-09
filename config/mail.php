@@ -109,10 +109,18 @@ return [
     | used globally for all emails that are sent by your application.
     |
     */
+    // //mailtrap
+    // 'from' => [
+    //     'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+    //     'name' => env('MAIL_FROM_NAME', 'Example'),
+    // ],
 
-    'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+    'mailers' => [
+
+        'mailjet' => [
+            'transport' => 'mailjet',
+        ],
+
     ],
 
 ];

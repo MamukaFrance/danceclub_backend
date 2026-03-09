@@ -9,6 +9,8 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\EventParticipant;
+use Illuminate\Mail\Mailables\Attachment;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class EventReservationConfirmed extends Mailable
@@ -40,15 +42,12 @@ class EventReservationConfirmed extends Mailable
      */
     public function content(): Content
     {
-        $qrCode = base64_encode($this->participant->generateQrCode());
         return new Content(
             view: 'emails.event_reservation_confirmed',
             with: [
                 'participant' => $this->participant,
                 'event' => $this->participant->event,
-                'qrCode' => $qrCode,
-            ]
-        );
+            ]);
     }
 
     /**
@@ -58,6 +57,16 @@ class EventReservationConfirmed extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        $pdf = Pdf::loadView('pdf.event_ticket', [
+        'participant' => $this->participant,
+        'event' => $this->participant->event,
+        ]);
+
+        return [
+            Attachment::fromData(
+                fn () => $pdf->output(),
+                'ticket-evenement.pdf'
+            )->withMime('application/pdf'),
+        ];
     }
 }

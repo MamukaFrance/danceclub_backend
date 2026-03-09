@@ -9,8 +9,7 @@
         {{ $participant->event->start_time }} - {{ $participant->event->end_time }}
     </li>
 </ul>
-<p>Voici votre QR Code pour accéder à l'événement :</p>
-<img src="data:image/png;base64,{{ $qrCode }}" alt="QR Code">
+<p>En pièce jointe, vous trouvez votre QR Code pour accéder à l'événement :</p>
 <p>Présentez ce QR code à l'entrée de l'événement.</p>
 <p>Code de réservation : {{ $participant->token }}</p>
 <p>Nous avons hâte de vous voir à l'événement !</p>
