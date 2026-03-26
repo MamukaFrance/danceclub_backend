@@ -27,6 +27,8 @@ services:
       - danceclub_net
     depends_on:
       - app
+    expose:
+      - "80"   # permet à Traefik de voir le service
 
   pgsql:
     image: postgres:18-alpine
