@@ -22,26 +22,28 @@ class CourseFactory extends Factory
         // Choisir un teacher existant
         $teacher = Teacher::inRandomOrder()->firstOrFail();
 
+        $faker = \Faker\Factory::create();
+
         // Capacité du cours
-        $capacity = fake()->numberBetween(10, 30);
+        $capacity = $faker ->numberBetween(10, 30);
 
         // Générer un horaire réaliste
-        $startHour = fake()->numberBetween(8, 20); // entre 8h et 20h
-        $startMinute = fake()->randomElement([0, 15, 30, 45]);
+        $startHour = $faker ->numberBetween(8, 20); // entre 8h et 20h
+        $startMinute = $faker ->randomElement([0, 15, 30, 45]);
         $start_time = sprintf('%02d:%02d:00', $startHour, $startMinute);
         $end_time = date('H:i:s', strtotime($start_time . ' +1 hour'));
 
         return [
             'teacher_id' => $teacher->id,
-            'title' => fake()->sentence(3),
+            'title' => $faker ->sentence(3),
             'style' => $teacher->style,
-            'level' => fake()->randomElement(['beginner', 'intermediate', 'advanced']),
+            'level' => $faker ->randomElement(['beginner', 'intermediate', 'advanced']),
             'capacity' => $capacity,
             'remaining_seats' => $capacity,
-            'date' => fake()->dateTimeBetween('now', '+3 months')->format('Y-m-d'),
+            'date' => $faker ->dateTimeBetween('now', '+3 months')->format('Y-m-d'),
             'start_time' => $start_time,
             'end_time' => $end_time,
-            'description' => fake()->paragraph(),
+            'description' => $faker ->paragraph(),
         ];
     }
 }
