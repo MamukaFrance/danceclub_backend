@@ -79,4 +79,4 @@ networks:
     
   traefik:
     external: true
-    name: dokploy-traefik
+    name: dokploy-network
