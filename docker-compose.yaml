@@ -8,6 +8,7 @@ services:
     restart: unless-stopped
     networks:
       - danceclub_net
+      - traefik
     volumes:
       - laravel_storage:/var/www/html/storage
       - laravel_cache:/var/www/html/bootstrap/cache
@@ -25,6 +26,7 @@ services:
       - laravel_public:/var/www/html/public
     networks:
       - danceclub_net
+      - traefik
     depends_on:
       - app
     labels:
@@ -76,3 +78,6 @@ volumes:
 networks:
   danceclub_net:
     driver: bridge
+    traefik:
+    external: true
+    name: dokploy-traefik
