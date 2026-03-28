@@ -30,6 +30,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.danceclub.rule=Host(`mamukaserver2.duckdns.org`)"
+      - "traefik.http.routers.danceclub.entrypoints=websecure"
+      - "traefik.http.routers.danceclub.tls=true"
       - "traefik.http.services.danceclub.loadbalancer.server.port=80"
 
   pgsql:
