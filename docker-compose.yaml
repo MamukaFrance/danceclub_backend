@@ -28,24 +28,39 @@ services:
     depends_on:
       - app
     labels:
+      # Traefik
       - "traefik.enable=true"
-      - "traefik.http.routers.danceclub.rule=Host(`mamukaserver2.duckdns.org`)"
-      - "traefik.http.services.danceclub.loadbalancer.server.port=80"
+      
+      # Port externe HTTPS
+      - "traefik.http.routers.laravel.rule=Host(`mamukaserver2.duckdns.org`)"
+      - "traefik.http.routers.laravel.entrypoints=websecure"
+      - "traefik.http.routers.laravel.tls=true"
+      - "traefik.http.routers.laravel.tls.certresolver=letsencrypt"
+
+      # Redirection HTTP → HTTPS
+      - "traefik.http.routers.laravel-http.rule=Host(`mamukaserver2.duckdns.org`)"
+      - "traefik.http.routers.laravel-http.entrypoints=web"
+      - "traefik.http.routers.laravel-http.middlewares=redirect-to-https"
+
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+      # Port interne nginx
+      - "traefik.http.services.laravel.loadbalancer.server.port=80"
 
   pgsql:
     image: postgres:18-alpine
     container_name: danceclub_db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: laravel
-      POSTGRES_USER: sail
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - danceclub_pgdata:/var/lib/postgresql/data
     networks:
       - danceclub_net
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U sail"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
       interval: 10s
       timeout: 5s
       retries: 5
