@@ -4,25 +4,21 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: danceclub_app
     restart: unless-stopped
     networks:
       - danceclub_net
     volumes:
       - laravel_storage:/var/www/html/storage
       - laravel_cache:/var/www/html/bootstrap/cache
-      - laravel_public:/var/www/html/public
     depends_on:
       - pgsql
       - redis
 
   nginx:
     image: nginx:alpine
-    container_name: danceclub_nginx
     restart: unless-stopped
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - laravel_public:/var/www/html/public
     networks:
       - danceclub_net
     depends_on:
@@ -49,7 +45,6 @@ services:
 
   pgsql:
     image: postgres:18-alpine
-    container_name: danceclub_db
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${DB_DATABASE}
@@ -67,7 +62,6 @@ services:
 
   redis:
     image: redis:alpine
-    container_name: danceclub_redis
     restart: unless-stopped
     volumes:
       - danceclub_redis:/data
@@ -82,7 +76,6 @@ services:
 volumes:
   laravel_storage:
   laravel_cache:
-  laravel_public:
   danceclub_pgdata:
   danceclub_redis:
 
