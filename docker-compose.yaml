@@ -34,7 +34,7 @@ services:
       - "traefik.http.routers.laravel.tls=true"
       - "traefik.http.routers.laravel.tls.certresolver=letsencrypt"
 
-      - "traefik.http.routers.laravel.service=laravel"
+      #- "traefik.http.routers.laravel.service=laravel"
 
       # Redirection HTTP → HTTPS
       - "traefik.http.routers.laravel-http.rule=Host(`mamukaserver2.duckdns.org`)"
