@@ -47,6 +47,9 @@ WORKDIR /var/www/html
 # Copier composer.json pour cache
 COPY composer.json composer.lock ./
 
+# Copier tout le projet
+COPY . .
+
 # Installer les dépendances PHP
 RUN composer install \
     --no-dev \
@@ -54,9 +57,6 @@ RUN composer install \
     --prefer-dist \
     --no-interaction \
     --no-progress
-
-# Copier tout le projet
-COPY . .
 
 # lancer scripts laravel
 RUN php artisan package:discover
