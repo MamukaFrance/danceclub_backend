@@ -28,6 +28,24 @@ services:
       # Traefik
       - "traefik.enable=true"
 
+      # Port externe HTTPS
+      - "traefik.http.routers.laravel.rule=Host(`mamukaserver2.duckdns.org`)"
+      - "traefik.http.routers.laravel.entrypoints=websecure"
+      - "traefik.http.routers.laravel.tls=true"
+      - "traefik.http.routers.laravel.tls.certresolver=letsencrypt"
+
+      #- "traefik.http.routers.laravel.service=laravel"
+
+      # Redirection HTTP → HTTPS
+      - "traefik.http.routers.laravel-http.rule=Host(`mamukaserver2.duckdns.org`)"
+      - "traefik.http.routers.laravel-http.entrypoints=web"
+      - "traefik.http.routers.laravel-http.middlewares=redirect-to-https"
+
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+      # Port interne nginx
+      - "traefik.http.services.laravel.loadbalancer.server.port=80"
+
   pgsql:
     image: postgres:18-alpine
     restart: unless-stopped
