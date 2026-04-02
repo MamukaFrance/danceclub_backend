@@ -53,7 +53,6 @@ RUN composer install \
     --optimize-autoloader \
     --prefer-dist \
     --no-interaction \
-    --no-scripts \
     --no-progress
 
 # Copier tout le projet
