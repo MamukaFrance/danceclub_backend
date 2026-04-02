@@ -10,14 +10,9 @@ use App\Http\Controllers\web\EventController;
 use App\Http\Controllers\web\AuthController;
 use App\Http\Controllers\web\EventParticipantController;
 
-// Welcome route
 
-
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
-
-Route::view('/home', 'web.pages.home')->name('home');
+// Home Routes
+Route::view('/', 'web.pages.home')->name('home');
 
 Route::view('/about', 'web.pages.about')->name('about');
 
