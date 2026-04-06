@@ -1,4 +1,4 @@
-@props([
+<!-- @props([
     'href' => null,
     'variant' => 'primary'
 ])
@@ -24,4 +24,4 @@
     ]) }}>
         {{ $slot }}
     </button>
-@endif
+@endif -->
