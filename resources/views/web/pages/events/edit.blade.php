@@ -117,18 +117,16 @@
 
             {{-- Actions --}}
             <div class="flex justify-between items-center pt-4">
-                <x-button type="submit" variant="primary">
-                    Mettre à jour
-                </x-button>
-                <x-button 
-                    type="reset"
-                    variant="reset">
-                    Réinitialiser
-                </x-button>
-                <x-button href="{{ route('events.show', $event) }}"
-                    variant="secondary">
-                    Retour
-                </x-button>
+                <a href="{{ route('events.index') }}"
+                    type="button"
+                    class="px-5 py-2  bg-gray-500 text-white rounded-lg hover:bg-gray-700 transition">
+                        Retour à la liste
+                </a>
+
+                <button type="submit"
+                        class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                    Update
+                </button>
             </div>
         </form>
     </div>

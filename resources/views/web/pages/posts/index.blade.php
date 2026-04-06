@@ -8,11 +8,11 @@
 <div class="container mx-auto px-4 py-6">
     <div class="flex justify-center items-center gap-6 mb-6">
         <h2 class="text-2xl font-bold text-center">Tous les posts</h2>
-        <x-button href="{{ route('posts.create') }}"
-            variant="primary"
-            class="bg-green-500 hover:bg-green-600">
-            Créer un post
-        </x-button>
+        <a href="{{ route('posts.create') }}"
+            type="button"
+            class="px-3 py-1.5 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition">
+            Créer un Post
+        </a>
     </div>
     <x-alert/>
     @if($posts->isEmpty())
@@ -35,10 +35,10 @@
                         </p>
                     @endif
                     <div class="flex justify-end mt-4">
-                        <x-button href="{{ route('posts.show', $post) }}"
-                            variant="primary">
+                        <a href="{{ route('posts.show', $post) }}"
+                            class="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition">
                             Détails
-                        </x-button>
+                        </a>
                     </div>
                     
                 </x-card>

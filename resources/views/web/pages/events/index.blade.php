@@ -9,11 +9,10 @@
 
     <div class="flex justify-center items-center gap-6 mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Liste des Events</h1>
-        <x-button href="{{ route('events.create') }}"
-            variant="primary"
-            class="bg-green-500 hover:bg-green-600">
+        <a href="{{ route('events.create') }}"
+            class="px-3 py-1.5 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition">
             Créer un Event
-        </x-button>
+        </a>
     </div>
 
     <x-alert/>
@@ -40,9 +39,11 @@
 
                     <form action="{{ route('eventparticipants.cancel', $participant) }}" method="POST">
                         @csrf
-                        <x-button type="submit" variant="danger">
+                        <button 
+                            type="submit"
+                            class="max-w-sm rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600 transition">
                             Annuler
-                        </x-button>
+                        </button>
                     </form>
 
                 @else
@@ -77,10 +78,10 @@
             </p>
 
             <div class="flex justify-end gap-2">
-                <x-button href="{{ route('events.show', $event) }}"
-                    variant="primary">
-                    Détails
-                </x-button>
+                <a href="{{ route('events.show', $event) }}"
+                    class="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                    Voir
+                </a>
             </div>
 
         </div>

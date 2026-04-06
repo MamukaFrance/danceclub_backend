@@ -23,25 +23,21 @@
     {{-- Actions CRUD --}}
     <div class="mt-6 flex justify-between items-center flex-wrap gap-2">
         @can('update', $post)
-        <x-button href="{{ route('posts.edit', $post) }}"
-            variant="primary">
-            Modifier
-        </x-button>
+            <a href="{{ route('posts.edit', $post->id) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                Modifier
+            </a>
         @endcan
         @can('delete', $post)
             <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');">
                 @csrf
                 @method('DELETE')
-                <x-button type="submit" variant="danger">
-                    Supprimer
-                </x-button>
+                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Supprimer</button>
             </form>
         @endcan
 
-        <x-button href="{{ route('posts.index') }}"
-            variant="secondary">
+        <a href="{{ route('posts.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
             Retour à la liste
-        </x-button>
+        </a>
     </div>
 </div>
 @endsection

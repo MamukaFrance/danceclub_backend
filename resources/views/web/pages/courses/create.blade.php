@@ -81,6 +81,9 @@
                 class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900" >
         </div>
 
+        
+
+
         {{-- Contenu --}}
         <div class="mb-4">
             <label for="description" class="block mb-2 font-semibold text-gray-700">Contenu</label>
@@ -93,21 +96,12 @@
             >{{ old('description') }}</textarea>  
         </div>
 
-        {{-- Boutons --}}
-        <div class="flex justify-center items-center gap-4 flex-wrap">
-            <x-button
-                type="submit"
-                variant="primary">
-                Publier
-            </x-button>
-            <x-button type="reset" variant="reset">
-                Réinitialiser
-            </x-button>
-            <x-button href="{{ route('courses.index') }}"
-                variant="secondary">
-                Retour
-            </x-button>
-        </div>
+        {{-- Bouton --}}
+        <button
+            type="submit"
+            class="bg-blue-700 text-white px-6 py-3 rounded-md hover:bg-blue-900 transition font-semibold">
+            Publier
+        </button>
     </form>
 </div>
 @endsection
