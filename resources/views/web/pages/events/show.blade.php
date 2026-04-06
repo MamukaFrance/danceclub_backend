@@ -45,16 +45,23 @@
     @endif
 
     {{-- Actions CRUD --}}
-    <div class="mt-6 flex space-x-2">
-        <a href="{{ route('events.edit', $event->id) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Modifier</a>
-
+    <div class="mt-6 flex items-center space-x-2">
+        <x-button href="{{ route('events.edit', $event) }}"
+            variant="primary">
+            Modifier
+        </x-button>
         <form action="{{ route('events.destroy', $event->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');">
             @csrf
             @method('DELETE')
-            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Supprimer</button>
+            <x-button type="submit" variant="danger">
+                Supprimer
+            </x-button>
+            
         </form>
-
-        <a href="{{ route('events.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">Retour à la liste</a>
+            <x-button href="{{ route('events.index') }}"
+                variant="secondary">
+                Retour à la liste
+            </x-button>
     </div>
 </div>
 @endsection

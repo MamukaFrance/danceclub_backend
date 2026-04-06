@@ -8,24 +8,22 @@
 
         @if($isReserved())
             <button type="submit"
-                class="mt-4 rounded-md bg-yellow-500 px-4 py-2 text-white hover:bg-yellow-600 transition">
+                class="rounded-md cursor-pointer bg-yellow-500 px-4 py-2 text-white hover:bg-yellow-600 transition">
                 Annuler
             </button>
 
         @elseif($isFull())
             <button type="button"
-                class="mt-4 rounded-md bg-red-500 px-4 py-2 text-white cursor-not-allowed">
+                class="rounded-md bg-red-500 px-4 py-2 text-white cursor-not-allowed">
                 Complet
             </button>
 
         @else
             <button type="submit"
-                class="mt-4 rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 transition">
+                class="rounded-md cursor-pointer bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 transition">
                 Réserver
             </button>
-
         @endif
-
     @endif
-
+    
 </form>

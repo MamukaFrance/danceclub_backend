@@ -9,11 +9,11 @@
     {{-- Affichage des cours existants --}}
     <div class="flex justify-center items-center gap-6 mb-6">
         <h2 class="text-2xl font-bold text-center my-6">Cours disponibles</h2>
-        <a href="{{ route('courses.create') }}"
-                type="button"
-                class="px-3 py-1.5 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition">
-                Créer un cours
-            </a>
+        <x-button href="{{ route('courses.create') }}"
+            variant="primary"
+            class="bg-green-500 hover:bg-green-600">
+            Créer un cours
+        </x-button>
     </div>
 
     <x-alert/>
@@ -47,10 +47,10 @@
                     </p>
 
                     <div class="flex justify-end mt-4">
-                        <a href="{{ route('courses.show', $course) }}"
-                            class="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                        <x-button href="{{ route('courses.show', $course) }}"
+                            variant="primary">
                             Détails
-                        </a>
+                        </x-button>
                     </div>
                 </div>
             @endforeach

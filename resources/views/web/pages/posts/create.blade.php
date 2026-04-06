@@ -60,18 +60,13 @@
         </div>
 
         {{-- Boutons --}}
-        <div class="mt-6 flex justify-between">
-            <button
-                type="submit"
-                class="px-5 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-900 transition"
-            >
-                Publier         
-            </button>
-            <a href="{{ route('posts.index') }}"
-                type="button"
-                class="px-5 py-2.5  bg-gray-500 text-white rounded-lg hover:bg-gray-700 transition">
-                    Retour à la liste
-            </a>
+        <div class="mt-6 flex items-center justify-between">
+            <x-button type="submit" variant="primary">
+                Publier
+            </x-button>
+             <x-button href="{{ route('posts.index') }}" variant="secondary">
+                Retour à la liste
+            </x-button>
         </div>
     </form>
 </div>

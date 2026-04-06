@@ -84,19 +84,16 @@
             </div>
         @endif
 
-        {{-- Bouton --}}
+        {{-- Boutons --}}
         <div class="flex justify-between items-center pt-4">
-            <button
+            <x-button
                 type="submit"
-                class="bg-blue-700 text-white px-6 py-3 rounded-md hover:bg-blue-900 transition font-semibold"
-            >
-                Mettre à jour          
-            </button>
-            <a href="{{ route('posts.index') }}"
-                type="button"
-                class="px-5 py-2  bg-gray-500 text-white rounded-lg hover:bg-gray-700 transition">
-                    Retour à la liste
-            </a>
+                variant="primary">
+                Mettre à jour
+            </x-button>
+             <x-button href="{{ route('posts.index') }}" variant="secondary">
+                Retour à la liste
+            </x-button>
         </div>
     </form>
 </div>
