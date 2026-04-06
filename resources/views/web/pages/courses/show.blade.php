@@ -54,10 +54,10 @@
             <div class="flex justify-between items-center gap-2 mt-4">
                
                 @can('update', $course)
-                    <x-button href="{{ route('courses.edit', $course) }}"
-                        variant="primary">
-                        Modifier
-                    </x-button>
+                    <a href="{{ route('courses.edit', $course) }}"
+                        class="px-3 py-1.5 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
+                        Éditer
+                    </a>
                 @endcan
 
                 <form action="{{ route('courses.destroy', $course) }}"
@@ -66,17 +66,16 @@
                     @csrf
                     @method('DELETE')
                     @can('delete', $course)
-                         <x-button
-                            type="submit"
-                            variant="danger">
+                        <button type="submit"
+                            class="px-3 py-1.5 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition">
                             Supprimer
-                        </x-button>
+                        </button>
                     @endcan
                 </form>
-                <x-button href="{{ route('courses.index') }}"
-                    variant="secondary">
+                <a href="{{ route('courses.index') }}" 
+                    class="px-3 py-1.5 text-sm bg-gray-500  text-white rounded hover:bg-gray-600 transition">
                     Retour à la liste
-                </x-button>
+                </a>
             </div>
         </div>
     </div>

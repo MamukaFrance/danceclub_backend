@@ -97,19 +97,12 @@
             >{{ old('description', $course->description ) }}</textarea>  
         </div>
 
-         {{-- Boutons --}}
-        <div class="flex justify-center items-center gap-4 flex-wrap">
-            <x-button type="submit" variant="primary">
-                Mettre à jour
-            </x-button>
-            <x-button type="reset" variant="reset">
-                Réinitialiser
-            </x-button>
-            <x-button href="{{ route('courses.show', $course) }}" 
-                variant="secondary">
-                Retour
-            </x-button>
-        </div> 
+        {{-- Bouton --}}
+        <button
+            type="submit"
+            class="bg-blue-700 text-white px-6 py-3 rounded-md hover:bg-blue-900 transition font-semibold">
+            Mettre à jour        
+        </button>
     </form>
 </div>
 @endsection
