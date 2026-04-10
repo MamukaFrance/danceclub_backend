@@ -22,7 +22,8 @@ RUN apk add --no-cache --virtual .build-deps \
     libjpeg-turbo-dev \
     freetype-dev \
     libxml2-dev \
-    zlib-dev
+    zlib-dev\
+    imagemagick-dev
 
 # Extensions PHP
 RUN docker-php-ext-configure gd \
@@ -37,6 +38,9 @@ RUN docker-php-ext-install \
 
 # Installer Redis extension
 RUN pecl install redis && docker-php-ext-enable redis
+
+# Installer Imagick extension
+RUN pecl install imagick && docker-php-ext-enable imagick
 
 # Installer Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
