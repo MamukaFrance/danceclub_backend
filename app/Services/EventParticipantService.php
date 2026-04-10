@@ -97,7 +97,7 @@ class EventParticipantService
                         'status' => EventParticipantStatus::REGISTERED,
                         'token'  => Str::random(40),
                     ]);
-                    // event(new EventReserved($eventReservation));
+                    event(new EventReserved($eventReservation));
                     return $eventReservation;
                 }
                 $eventReservation = $this->eventParticipantRepository->create([
@@ -105,7 +105,7 @@ class EventParticipantService
                     'user_id'  => $userId,
                     'status'   => EventParticipantStatus::REGISTERED,
                 ]);
-                // event(new EventReserved($eventReservation));
+                event(new EventReserved($eventReservation));
                 return $eventReservation;
             });
         } catch (QueryException $e) {
@@ -131,7 +131,7 @@ class EventParticipantService
                     $eventParticipant,
                     ['status' => EventParticipantStatus::CANCELLED]
                 );
-                // event(new EventCancelled($eventCancelled));
+                event(new EventCancelled($eventCancelled));
                 return $eventCancelled;
             });
         } catch (QueryException $e) {
