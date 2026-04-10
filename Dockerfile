@@ -87,7 +87,8 @@ RUN apk add --no-cache \
     freetype \
     libxml2 \
     oniguruma \
-    curl
+    curl\
+    imagemagick
 
 # copier extensions PHP compilées
 COPY --from=build /usr/local/lib/php/extensions /usr/local/lib/php/extensions
