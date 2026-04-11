@@ -19,6 +19,23 @@
             <p class="text-gray-600 mb-4">
                 Ce participant a déjà été enregistré pour cet événement.
             </p>
+             <!-- Infos -->
+            <div class="mt-4 text-gray-600">
+                <p>
+                    <span class="font-semibold text-gray-800">Participant :</span><br>
+                    {{ $participant->user->name }}
+                </p>
+
+                <p>
+                    <span class="font-semibold text-gray-800">Événement :</span><br>
+                    {{ $participant->event->title }}
+                </p>
+
+                <p>
+                    <span class="font-semibold text-gray-800">Date :</span><br>
+                    {{ \Carbon\Carbon::parse($participant->event->date)->format('d/m/Y') }}
+                </p>
+            </div>
 
             
 
