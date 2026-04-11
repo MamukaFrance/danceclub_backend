@@ -5,7 +5,7 @@
 @source '../views/**/*.blade.php';
 @source '../js/**/*.js';
 
-@source inline("duration-{200,300}");
+@source inline("duration-200");
 
 
 @theme {
