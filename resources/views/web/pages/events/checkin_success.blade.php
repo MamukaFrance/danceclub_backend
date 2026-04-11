@@ -8,6 +8,28 @@
 
             
 
+            <!-- Titre -->
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">
+                Présence validée
+            </h2>
+
+            <!-- Infos -->
+            <div class="mt-4 text-gray-600">
+                <p>
+                    <span class="font-semibold text-gray-800">Participant :</span><br>
+                    {{ $participant->user->name }}
+                </p>
+
+                <p>
+                    <span class="font-semibold text-gray-800">Événement :</span><br>
+                    {{ $participant->event->title }}
+                </p>
+
+                
+            </div>
+
+            
+
         </div>
     </div>
 
