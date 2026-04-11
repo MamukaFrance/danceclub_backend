@@ -24,14 +24,14 @@
             </p>
 
             <!-- Infos -->
-            <div class="bg-gray-50 rounded-lg p-4 text-sm text-gray-500">
+            <div class="bg-gray-50 rounded p-4 text-sm text-gray-500">
                 Vérifiez que vous utilisez le bon lien ou contactez l’organisateur de l’événement.
             </div>
 
             <!-- Boutons -->
             <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
                 <a href="{{ route('home') }}"
-                class="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-5 rounded-xl transition">
+                class="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-5 rounded transition">
                     Accueil
                 </a>
             </div>
