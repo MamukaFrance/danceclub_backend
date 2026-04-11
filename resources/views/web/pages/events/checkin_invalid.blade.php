@@ -29,7 +29,7 @@
             </div>
 
             <!-- Boutons -->
-            <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+            <div class="mt-6">
                 <a href="{{ route('home') }}"
                 class="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-5 rounded transition">
                     Accueil
