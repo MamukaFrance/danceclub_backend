@@ -37,9 +37,14 @@
                 </p>
             </div>
 
-            
+            <!-- Bouton -->
+            <div class="mt-6">
+                <a href="{{ url('/') }}"
+                class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-6 rounded-xl transition duration-200">
+                    Retour à l'accueil
+                </a>
+            </div>
 
-            <h2>Ce participant a deja fait son checkin sur l'event</h2> 
         </div>
     </div>
 @endsection
