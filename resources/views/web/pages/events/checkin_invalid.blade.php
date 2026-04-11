@@ -34,11 +34,6 @@
                 class="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-5 rounded-xl transition">
                     Accueil
                 </a>
-
-                <a href="mailto:support@tonsite.com"
-                class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-5 rounded-xl transition">
-                    Contacter le support
-                </a>
             </div>
 
         </div>
