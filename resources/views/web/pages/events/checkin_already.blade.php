@@ -22,28 +22,22 @@
              <!-- Infos -->
             <div class="mt-4 text-gray-600">
                 <p>
-                    <span class="font-semibold text-gray-800">Participant :</span><br>
+                    <span class="font-semibold text-gray-800">Participant :</span>
                     {{ $participant->user->name }}
                 </p>
 
                 <p>
-                    <span class="font-semibold text-gray-800">Événement :</span><br>
+                    <span class="font-semibold text-gray-800">Événement :</span>
                     {{ $participant->event->title }}
                 </p>
 
                 <p>
-                    <span class="font-semibold text-gray-800">Date :</span><br>
+                    <span class="font-semibold text-gray-800">Date :</span>
                     {{ \Carbon\Carbon::parse($participant->event->date)->format('d/m/Y') }}
                 </p>
             </div>
 
-            <!-- Bouton -->
-            <div class="mt-6">
-                <a href="{{ url('/') }}"
-                class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-6 rounded-xl transition duration-200">
-                    Retour à l'accueil
-                </a>
-            </div>
+            
 
         </div>
     </div>
