@@ -1,7 +1,13 @@
-<h2>Ce participant a déjà été enregistré.</h2>
+@extends('layouts.app')
 
-<p>Participant : {{ $participant->user->name }}</p>
+@section('title', 'Liste des Events')
 
-<p>Événement : {{ $participant->event->title }}</p>
+@section('content')
+    <h2>Ce participant a déjà été enregistré.</h2>
 
-<p>Date : {{ $participant->event->date }}</p>
+    <p>Participant : {{ $participant->user->name }}</p>
+
+    <p>Événement : {{ $participant->event->title }}</p>
+
+    <p>Date : {{ $participant->event->date }}</p>
+@endsection
