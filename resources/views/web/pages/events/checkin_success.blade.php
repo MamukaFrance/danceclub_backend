@@ -8,7 +8,7 @@
 
             <!-- Icône -->
             <div class="flex justify-center mb-4">
-                <div class="rounded-full p-4">
+                <div class="bg-green-100 rounded-full p-4">
                     ✅
                 </div>
             </div>
