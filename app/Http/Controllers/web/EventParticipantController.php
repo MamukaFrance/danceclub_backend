@@ -128,8 +128,7 @@ use App\Models\Event;
             $participant = EventParticipant::where('token', $token)->firstOrFail();
 
             if ($participant->present) {
-                // return back()->with('info', 'Ce participant a déjà été enregistré.');
-                return view('web/pages/events.checkin_already', compact('participant'));   
+                return back()->with('info', 'Ce participant a déjà été enregistré.');
             }
 
             $participant->present = true;
