@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-         <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 text-center border-2 border-amber-400">
+         <div class="w-full max-w-md bg-white rounded shadow-lg p-6 text-center border-2 border-amber-400">
             <h2>Ce participant a deja fait son checkin sur l'event</h2> 
         </div>
     </div>
