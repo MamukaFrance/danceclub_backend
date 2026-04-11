@@ -33,13 +33,7 @@
                 
             </div>
 
-            <!-- Bouton -->
-            <div class="mt-6">
-                <a href="{{ route('home') }}"
-                class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded transition">
-                    Retour à l'accueil
-                </a>
-            </div>
+            
 
         </div>
     </div>
