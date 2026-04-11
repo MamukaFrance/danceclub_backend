@@ -31,10 +31,6 @@
                     {{ $participant->event->title }}
                 </p>
 
-                <p>
-                    <span class="font-semibold text-gray-800">Date :</span><br>
-                    {{ \Carbon\Carbon::parse($participant->event->date)->format('d/m/Y') }}
-                </p>
             </div>
 
             
