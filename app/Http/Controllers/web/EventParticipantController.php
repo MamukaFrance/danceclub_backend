@@ -125,28 +125,15 @@ use App\Models\Event;
 
         public function checkin($token)
         {
-            $participant = EventParticipant::where('token', $token)->first();
+            $participant = EventParticipant::where('token', $token)->firstOrFail();
 
-            if (!$participant) {
-                return view('web.pages.events.checkin', [
-                    'status' => 'invalid'
-                ]);
-            }
-            
             if ($participant->present) {
-                 return view('web.pages.events.checkin', [
-                    'status' => 'already',
-                    'participant' => $participant
-                ]);
+                return back()->with('info', 'Ce participant a déjà été enregistré.');
             }
 
             $participant->present = true;
             $participant->save();
 
-            return view('web.pages.events.checkin', [
-                'status' => 'success',
-                'participant' => $participant
-            ]);        
-        }
+            return view('web/pages/events.checkin_success', compact('participant'));        }
     }
 
