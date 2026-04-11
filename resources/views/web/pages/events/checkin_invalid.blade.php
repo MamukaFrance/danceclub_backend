@@ -28,7 +28,13 @@
                 Vérifiez que vous utilisez le bon lien ou contactez l’organisateur de l’événement.
             </div>
 
-            
+            <!-- Boutons -->
+            <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="{{ route('home') }}"
+                class="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-5 rounded transition">
+                    Accueil
+                </a>
+            </div>
 
         </div>
     </div>
