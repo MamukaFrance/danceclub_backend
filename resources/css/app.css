@@ -5,9 +5,6 @@
 @source '../views/**/*.blade.php';
 @source '../js/**/*.js';
 
-@source inline("duration-200");
-
-
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
