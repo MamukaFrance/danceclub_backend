@@ -37,6 +37,14 @@
                 </p>
             </div>
 
+            <!-- Bouton -->
+            <div class="mt-6">
+                <a href="{{ route('home') }}"
+                class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-6 rounded-xl transition duration-200">
+                    Retour à l'accueil
+                </a>
+            </div>
+
             
 
         </div>
