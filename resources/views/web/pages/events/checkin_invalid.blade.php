@@ -31,7 +31,7 @@
             <!-- Boutons -->
             <div class="mt-6">
                 <a href="{{ route('home') }}"
-                class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded transition">
+                class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition">
                     Retour à l'accueil
                 </a>
             </div>
